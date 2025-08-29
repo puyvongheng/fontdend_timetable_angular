@@ -1,0 +1,149 @@
+<div class="app-container">
+  <!--&& teacherDetails?.role !== 'admin'-->
+  <app-navbar class="navbar" style="width: 100%;" *ngIf="(teacherDetails || studentDetails) && !isTimetablePage()">
+  </app-navbar> 
+  <div class="main-content">
+    <div *ngIf="teacherDetails?.role === 'admin'" class="sidebar">
+      <app-navleft style="width: min-content;"></app-navleft>
+    </div>
+
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+</div>
+<app-navbar class="navbarbutoom" style="width: 100%;" *ngIf="(teacherDetails || studentDetails) && !isTimetablePage()">
+</app-navbar>
+
+<style>
+  .navbar {
+    background-color: rgba(87, 87, 87, 0);
+    margin-top: -10px;
+  }
+  .navbarbutoom {
+    display: none;
+
+  }
+
+    @media (max-width: 768px) {
+      .navbar {
+        display: none;
+        /* Hide the navbar on smaller screens */
+
+  }
+
+  .sidebar{
+    display: none !important;
+
+}
+
+
+
+  .navbarbutoom{
+    display: block;
+
+
+  }
+
+}
+ 
+
+
+
+    </style>
+    </div>
+    <style>
+      @media print {
+    
+        /* Hide the navbar */
+        app-navbar {
+          display: none !important;
+        }
+    .sidebar{
+            display: none !important;
+
+    }
+  }
+
+
+  @media screen and (max-width: 768px) {
+  
+    @media print {
+    /* Hide the navbar and sidebar */
+    app-navbar, .sidebar {
+      display: none !important;
+    }
+
+    /* Force content area to look like a desktop screen */
+    .content-area {
+      width: 100% !important;
+      max-width: 1200px !important; /* Desktop-like width */
+      margin: auto; /* Center content */
+    }
+
+    /* Set a fixed desktop-like width */
+    body {
+      width: 1200px !important;
+      transform: scale(1); /* Prevents shrinking */
+      transform-origin: top left;
+    }
+
+    /* Adjust font size for readability */
+    body, html {
+      font-size: 14px !important;
+    }
+  }
+}
+
+
+
+
+
+
+
+
+  .app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+  }
+
+  .main-content {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+ 
+  
+  .content-area {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+
+               /* Space for the floating button */
+    scrollbar-width: thin;
+               /* For Firefox */
+    scrollbar-color: transparent transparent;
+  }
+
+
+
+  /* Chrome, Edge, Safari */
+.content-area::-webkit-scrollbar {
+  width: 6px;
+}
+
+.content-area::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.content-area::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 3px;
+}
+
+
+</style>
+
+

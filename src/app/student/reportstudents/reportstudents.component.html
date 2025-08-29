@@ -1,0 +1,87 @@
+<p>reportstudents works!</p>
+<div class="container mt-4  absolute" style="background-color: white; border-radius: 10px; padding: 20px;
+ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+
+    <table class="table table-bordered">
+        <thead class="text-center align-middle">
+            <tr>
+                <th>Department Name</th>
+                <th>ជំនាញ</th>
+                <th>ឆ្នាំទី</th>
+                <th>ជំនាន់</th>
+                <th>ក្រុម</th>
+                <th>វេនសិក្សា</th>
+                <th>ចំនួន</th>
+                <th> ឋ</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let major of majors_with_students">
+                <tr class="text-center align-middle">
+                    <td [attr.rowspan]="major.students.length || 1" class=" align-middle">{{ major.department_name }}
+                    </td>
+                    <td [attr.rowspan]="major.students.length || 1" class="text-center align-middle">{{ major.major_name
+                        }}</td>
+
+
+                    <ng-container *ngIf="major.students.length > 0; else noStudents">
+                        <td>{{ major.students[0].batch }}</td>
+                        <td>{{ major.students[0].generation }}</td>
+                        <td>{{ major.students[0].group_student }}</td>
+                        <td>{{ major.students[0].shift_name }}</td>
+                        <td>{{ major.students[0].total_students }} នាក់</td>
+                    </ng-container>
+                </tr>
+
+                <tr *ngFor="let student of major.students.slice(1)" class="text-center align-middle">
+                    <td>{{ student.batch }}</td>
+                    <td>{{ student.generation }}</td>
+                    <td>{{ student.group_student }}</td>
+                    <td>{{ student.shift_name }}</td>
+                    <td>{{ student.total_students }} នាក់</td>
+                    <td>
+
+
+                        <a href="http://localhost:4200/totalscore?exam_id=1&major_id={{ student.major_id}}&generation={{ student.generation }}&batch={{ student.batch }}&group_student={{ student.group_student }}&shift_name={{ student.shift_name }} "
+                            target="_blank" rel="noopener noreferrer">
+
+                                         មើលចំណាត់ថ្នាក់
+
+                        </a>
+                    </td>
+
+                </tr>
+
+                <ng-template #noStudents>
+                    <td colspan="5" class="text-center">No students available</td>
+                </ng-template>
+            </ng-container>
+        </tbody>
+    </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>

@@ -1,0 +1,229 @@
+.AddSubjectForm {
+  background-color: #f8f9fa; /* Light background for the form container */
+  padding: 25px;
+  border-radius: 10px; /* Rounded corners for the container */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05); /* Subtle shadow for depth */
+  margin-top: 20px; /* Adjust top margin as needed, keep mt-4 or increase */
+}
+
+.AddSubjectForm form {
+  display: flex; /* Use flexbox for better layout control */
+  align-items: center; /* Vertically align items in the form */
+  gap: 15px; /* Spacing between form elements */
+  flex-wrap: wrap; /* Allow elements to wrap on smaller screens */
+}
+
+.AddSubjectForm .form-group {
+  margin-bottom: 0; /* Remove default bottom margin from form-group */
+  flex-grow: 1; /* Allow input to grow and take available space */
+  min-width: 200px; /* Minimum width for input group */
+}
+
+.AddSubjectForm .form-control {
+  border: 1px solid #ced4da; /* Light grey border */
+  border-radius: 8px; /* Rounded corners for input */
+  padding: 10px 15px; /* Padding inside input */
+  font-size: 1rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; /* Smooth transitions */
+}
+
+.AddSubjectForm .form-control:focus {
+  border-color: #007bff; /* Primary blue on focus */
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Focus shadow */
+  outline: 0; /* Remove default focus outline */
+}
+
+.AddSubjectForm nz-select {
+  width: 100%; /* Fixed width for select, adjust as needed */
+}
+
+.AddSubjectForm nz-select .ant-select-selector {
+  border-radius: 8px; /* Rounded corners for select */
+  border: 1px solid #ced4da;
+  padding: 7px 10px; /* Adjust padding to match input height */
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.AddSubjectForm nz-select:focus-within .ant-select-selector, /* Style when select is focused (clicked) */
+.AddSubjectForm nz-select .ant-select-selector:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  outline: 0;
+}
+
+
+.AddSubjectForm button[nz-button][nzType="primary"] {
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 500;
+  transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out; /* Button hover effect */
+}
+
+.AddSubjectForm button[nz-button][nzType="primary"]:hover {
+  background-color: #0069d9; /* Darker primary on hover */
+  transform: scale(1.02); /* Slight scale up on hover */
+}
+
+
+.AddSubjectForm button[nz-button]:not([nzType="primary"]) { /* Style for Cancel button (not primary) */
+  border-radius: 8px;
+  padding: 10px 20px;
+  background-color: #e0e0e0; /* Light grey background for cancel */
+  color: #333; /* Darker text for cancel */
+  border-color: #e0e0e0;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.2s ease-in-out;
+  margin-left: 10px; /* Add spacing from primary button */
+}
+
+.AddSubjectForm button[nz-button]:not([nzType="primary"]):hover {
+  background-color: #d0d0d0; /* Slightly darker grey on hover for cancel */
+  color: #222;
+  transform: scale(1.02);
+}
+
+
+
+
+
+
+
+
+.Subjects {
+    background-color: #fff;
+    /* White background for the table container */
+    border-radius: 12px;
+    /* Rounded corners for the container */
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    /* Soft shadow for depth */
+    overflow: hidden;
+    /* Ensure rounded corners are respected for content inside */
+    margin-bottom: 20px;
+    /* Spacing below the table */
+}
+
+.Subjects .table {
+    width: 100%;
+    border-collapse: collapse;
+    /* Single border for table */
+    margin-bottom: 0;
+    /* Remove default table bottom margin */
+}
+
+.Subjects .table thead {
+    background-color: #f8f9fa;
+    /* Light grey background for header */
+    border-bottom: 2px solid #dee2e6;
+    /* Separator line for header */
+}
+
+.Subjects .table th {
+    color: #495057;
+    /* Dark grey text for header */
+    font-weight: 600;
+    /* Semi-bold header text */
+    padding: 14px 16px;
+    /* Padding in header cells */
+    text-align: left;
+    /* Left-align header text */
+    border-bottom: 1px solid #dee2e6;
+    /* Separator for header cells */
+}
+
+.Subjects .table tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+    /* Light grey for even rows for visual rhythm */
+}
+
+.Subjects .table tbody td {
+    padding: 12px 16px;
+    /* Padding in data cells */
+    border-bottom: 1px solid #eee;
+    /* Light grey separator for data cells */
+    color: #343a40;
+    /* Darker text for data */
+}
+
+.Subjects .table tbody tr:last-child td {
+    border-bottom: none;
+    /* Remove border from the last row's bottom */
+}
+
+.Subjects .table tbody tr td:first-child {
+    font-weight: 500;
+    /* Slightly bolder for the ID column */
+}
+
+/* Faculty Header Row Style */
+.Subjects .table tbody tr:has(> td[colspan="4"]) {
+    /* Target faculty header row */
+    background-color: #e0f7fa;
+    /* Light cyan background for faculty header */
+}
+
+.Subjects .table tbody tr:has(> td[colspan="4"]) td {
+    color: #00838f;
+    /* Dark cyan text for faculty header */
+    font-weight: 700;
+    /* Bold text for faculty header */
+    padding: 14px 16px;
+    /* Padding for faculty header cell */
+    border-bottom: 1px solid #b2ebf2;
+    /* Slightly darker cyan border below header */
+}
+
+/* Action Icons and Links */
+.Subjects .table tbody td i[style*="color: rgb(255, 7, 7)"] {
+    /* Edit Icon */
+    color: #00bcd4 !important;
+    /* Teal color for edit icon */
+    cursor: pointer;
+    /* Indicate clickable */
+    margin-right: 10px;
+    font-size: 1.1em;
+    /* Slightly larger icon */
+    transition: color 0.2s ease-in-out;
+    /* Smooth color transition on hover */
+}
+
+.Subjects .table tbody td i[style*="color: rgb(255, 7, 7)"]:hover {
+    color: #0097a7 !important;
+    /* Darker teal on hover */
+}
+
+
+.Subjects .table tbody td a[nz-popconfirm] {
+    /* Delete Link */
+    color: #f44336;
+    /* Red color for delete link */
+    text-decoration: none;
+    /* Remove underline from link */
+    font-weight: 500;
+    /* Semi-bold delete text */
+    transition: color 0.2s ease-in-out;
+    /* Smooth color transition */
+}
+
+.Subjects .table tbody td a[nz-popconfirm]:hover {
+    color: #d32f2f;
+    /* Darker red on hover */
+    text-decoration: underline;
+    /* Add underline on hover for emphasis */
+}
+
+/* Faculty Header Row Style (Class-based approach) */
+.Subjects .table tbody tr.faculty-header-row {
+    /* Target faculty header row with class */
+    background-color: #e0f7fa;
+    /* Light cyan background for faculty header */
+}
+
+.Subjects .table tbody tr.faculty-header-row td {
+    color: #00838f;
+    /* Dark cyan text for faculty header */
+    font-weight: 700;
+    /* Bold text for faculty header */
+    padding: 14px 16px;
+    /* Padding for faculty header cell */
+    border-bottom: 1px solid #b2ebf2;
+    /* Slightly darker cyan border below header */
+}

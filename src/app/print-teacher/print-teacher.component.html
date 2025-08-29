@@ -1,0 +1,317 @@
+
+
+
+<style>
+    body {
+        font-family: Moul;
+        font-size: xx-small;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        border: 1px solid black;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+</style>
+
+
+
+<nz-skeleton [nzActive]="true" *ngIf="isLoading" [nzAvatar]="true" [nzParagraph]="{ rows: 4 }"></nz-skeleton>
+
+<div *ngIf="groupedTimetables && groupedTimetables.length > 0; else noData">
+
+
+
+    <table *ngIf="!isLoading" style="font-family: Battambang;">
+        <thead>
+            <tr>
+                <th>ម៉ោងសិក្សា/Study Time</th>
+
+                <th *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')">ថ្ងៃច័ន្ទ/Monday</th>
+                <th *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')">ថ្ងៃអង្គារ/Tuesday
+                </th>
+                <th *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')">ថ្ងៃពុធ/Wednesday</th>
+                <th *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')">
+                    ថ្ងៃព្រហស្បតិ៍/Thursday
+                </th>
+                <th *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')">ថ្ងៃសុក្រ/Friday</th>
+
+                <!-- For Saturday and Sunday columns -->
+                <th *ngIf="filterStudyShift === '' || filterStudyShift.includes('Saturday-Sunday')">ថ្ងៃសៅរ៍/Saturday
+                </th>
+                <th *ngIf="filterStudyShift === '' || filterStudyShift.includes('Saturday-Sunday')">ថ្ងៃអាទិត្យ/Sunday
+                </th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let entry of groupedTimetables">
+
+                <td>{{ entry.time }}</td>
+
+                <td *ngIf="entry.Monday ; else freeMonday ; ">
+
+                    <div *ngIf="findStudySession(entry.Monday.study_sessions_id) as session">
+
+
+                    </div>
+
+
+                    <strong>Session ID: </strong>{{ entry.Monday.study_sessions_id }}<br>
+
+                    ឆ្នាំទី :{{ entry.Monday.batch }}<br>
+                    ជំនាន់ : {{ entry.Monday.generation }}<br>
+                    ជំនាញ : {{ entry.Monday.major_name }}<br>
+                    group_student :{{ entry.Monday.group_student }}<br>
+                    ជំនាញ {{ entry.Monday.subject_name }}/
+                    {{ findTeacher(entry.Monday.teacher_id) }}
+                    <div *ngIf="findRoom(entry.Monday.room_id) as room">
+                        <!--   Type: {{ room.room_type }}<br>-->
+                        Number: {{ room.room_number }}<br>
+                        <!--   Floor: {{ room.floor }}-->
+                    </div>
+                </td>
+
+                <ng-template #freeMonday>
+
+                    <td *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')">free</td>
+
+
+                </ng-template>
+
+                <td *ngIf="entry.Tuesday  ; else freeTuesday">
+                    ឆ្នាំទី :{{ entry.Tuesday.batch }}<br>
+                    ជំនាន់ : {{ entry.Tuesday.generation }}<br>
+                    ជំនាញ : {{ entry.Tuesday.major_name }}<br>
+                    {{ entry.Tuesday.subject_name }} /
+                    {{ findTeacher(entry.Tuesday.teacher_id) }}<br>
+                    <div *ngIf="findRoom(entry.Tuesday.room_id) as room">
+                        Type: {{ room.room_type }}<br>
+                        Number: {{ room.room_number }}<br>
+                        Floor: {{ room.floor }}
+                    </div>
+                </td>
+                <ng-template #freeTuesday>
+                    <td *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')">free</td>
+                </ng-template>
+
+
+                <td *ngIf="entry.Wednesday ; else freeWednesday">
+                    ឆ្នាំទី :{{ entry.Wednesday.batch }}<br>
+                    ជំនាន់ : {{ entry.Wednesday.generation }}<br>
+                    ជំនាញ : {{ entry.Wednesday.major_name }}<br>
+                    {{ entry.Wednesday.subject_name }}<br>
+                    {{ findTeacher(entry.Wednesday.teacher_id) }}<br>
+                    <div *ngIf="findRoom(entry.Wednesday.room_id) as room">
+                        Type: {{ room.room_type }}<br>
+                        Number: {{ room.room_number }}<br>
+                        Floor: {{ room.floor }}
+                    </div>
+                </td>
+                <ng-template #freeWednesday>
+                    <td *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')">free</td>
+                </ng-template>
+
+
+                <td *ngIf="entry.Thursday; else freeThursday">
+                    ឆ្នាំទី :{{ entry.Thursday.batch }}<br>
+                    ជំនាន់ : {{ entry.Thursday.generation }}<br>
+                    ជំនាញ : {{ entry.Thursday.major_name }}<br>
+                    {{ entry.Thursday.subject_name }}<br>
+                    {{ findTeacher(entry.Thursday.teacher_id) }}<br>
+                    <div *ngIf="findRoom(entry.Thursday.room_id) as room">
+                        Type: {{ room.room_type }}<br>
+                        Number: {{ room.room_number }}<br>
+                        Floor: {{ room.floor }}
+                    </div>
+                </td>
+                <ng-template #freeThursday>
+                    <td *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')">free</td>
+                </ng-template>
+
+                <td *ngIf="entry.Friday ; else freeFriday">
+                    ឆ្នាំទី :{{ entry.Friday.batch }}<br>
+                    ជំនាន់ : {{ entry.Friday.generation }}<br>
+                    ជំនាញ : {{ entry.Friday.major_name }}<br>
+
+                    {{ entry.Friday.subject_name }}<br>
+                    {{ findTeacher(entry.Friday.teacher_id) }}<br>
+                    <div *ngIf="findRoom(entry.Friday.room_id) as room">
+                        Type: {{ room.room_type }}<br>
+                        Number: {{ room.room_number }}<br>
+                        Floor: {{ room.floor }}
+                    </div>
+                </td>
+                <ng-template #freeFriday>
+                    <td *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')">free</td>
+                </ng-template>
+
+
+                <td *ngIf="entry.Saturday ; else freeSaturday">
+                    ឆ្នាំទី :{{ entry.Saturday.batch }}<br>
+                    ជំនាន់ : {{ entry.Saturday.generation }}<br>
+                    ជំនាញ : {{ entry.Saturday.major_name }}<br>
+
+                    {{ entry.Saturday.subject_name }}<br>
+                    {{ findTeacher(entry.Saturday.teacher_id) }}<br>
+                    <div *ngIf="findRoom(entry.Saturday.room_id) as room">
+                        Type: {{ room.room_type }}<br>
+                        Number: {{ room.room_number }}<br>
+                        Floor: {{ room.floor }}
+                    </div>
+                </td>
+                <ng-template #freeSaturday>
+                    <td *ngIf="filterStudyShift === '' || filterStudyShift.includes('Saturday-Sunday')">free</td>
+                </ng-template>
+
+
+                <td *ngIf="entry.Sunday ; else freeSunday">
+                    ឆ្នាំទី :{{ entry.Sunday.batch }}<br>
+                    ជំនាន់ : {{ entry.Sunday.generation }}<br>
+                    ជំនាញ : {{ entry.Sunday.major_name }}<br>
+
+                    {{ entry.Sunday.subject_name }}<br>
+                    {{ findTeacher(entry.Sunday.teacher_id) }}<br>
+                    <div *ngIf="findRoom(entry.Sunday.room_id) as room">
+                        Type: {{ room.room_type }}<br>
+                        Number: {{ room.room_number }}<br>
+                        Floor: {{ room.floor }}
+                    </div>
+                </td>
+                <ng-template #freeSunday>
+                    <td *ngIf="filterStudyShift === '' || filterStudyShift.includes('Saturday-Sunday')">free</td>
+                </ng-template>
+
+
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="!isLoading">
+
+        <br>
+
+
+
+
+        <nz-select style="width: 100px;" nzShowSearch nzAllowClear nzPlaceHolder="year {{filterYear}}" name="filterYear"
+            [(ngModel)]="filterYear" (ngModelChange)="filterTimetables()">
+            <nz-option *ngFor="let year of uniqueYears" [nzLabel]="year" [nzValue]="year.toString()">
+                {{ year }}
+            </nz-option>
+        </nz-select>
+
+        <nz-select style="width: 100px;" nzShowSearch nzAllowClear nzPlaceHolder="ឆមាស" name="filterSemester"
+            [(ngModel)]="filterSemester" (ngModelChange)="filterTimetables()">
+            <nz-option *ngFor="let semester of uniqueSemesters" [nzLabel]="semester" [nzValue]="semester.toString()">
+            </nz-option>
+        </nz-select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <button nzShape="round" nz-button nzType="default" ((click))="filterTimetables()"> <i style="        margin-right: 8px;
+                        " class="fa fa-search" aria-hidden="true"></i> ស្វែងរក</button>
+
+
+
+
+
+    </div>
+
+
+
+</div>
+
+
+<ng-template #noData>
+
+    <nz-result nzTitle="រកមិនឃើញកាវិភាគរបស់គ្រូទេ! អាចមកពីមិនទាន់មានម៉ោងបង្រៀន ">
+        <div nz-result-extra>
+        </div>
+    </nz-result>
+
+</ng-template>
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    /* Style for the QR code container */
+    .nz-qrcode {
+        margin: 20px auto;
+        display: block;
+        border-radius: 10px;
+        padding: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Style for the button */
+    button[nz-button] {
+        margin: 10px 0;
+        background-color: #1677ff;
+        color: white;
+        font-size: 14px;
+        border-radius: 5px;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    /* Hover effect for the button */
+    button[nz-button]:hover {
+        background-color: #0057d8;
+    }
+
+    /* Style for the loading spinner */
+    nz-spin {
+        margin: 20px auto;
+        display: block;
+        width: 50px;
+        height: 50px;
+    }
+
+    /* Custom icon style for loading */
+    nz-icon[nzType="loading"] {
+        color: #1677ff;
+        font-size: 40px;
+    }
+
+    /* Align the button and QR code container in the center */
+    .centered-container {
+        text-align: center;
+        padding: 20px;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+</style>

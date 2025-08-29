@@ -1,0 +1,632 @@
+<style>
+    /* Ensure the menu container is scrollable */
+    .wrapper {
+        position: relative;
+        height: 90vh;
+        display: flex;
+        flex-direction: column;
+        margin-left: 5px;
+        background-color: #0b9dff00;
+        border-radius:20px;
+        box-shadow: 0 0 15px rgba(11, 157, 255, 0.5);
+        transition: width 0.3s ease;
+        will-change: width;  /* helps smoother animation */
+        padding-bottom: 20px;
+
+    }
+
+
+      
+  
+
+    .menu-list {
+        flex: 1;
+        /* Allow the menu to take up remaining space */
+        overflow-y: scroll;
+        /* Enable vertical scrolling */
+        padding-bottom: 60px;
+        /* Space for the floating button */
+        scrollbar-width: thin;
+        /* For Firefox */
+        scrollbar-color: transparent transparent;
+        /* For Firefox */
+    }
+
+    /* Hide scrollbar for Webkit browsers (Chrome, Safari, etc.) */
+    .menu-list::-webkit-scrollbar {
+        display: none;
+    }
+
+
+    /* Make the menu list scrollable */
+    .menu-list {
+        flex: 1;
+        /* Allow the menu to take up remaining space */
+        overflow-y: auto;
+        /* Enable vertical scrolling */
+        padding-bottom: 60px;
+        /* Space for the floating button */
+    }
+
+
+
+
+
+ 
+
+    /* Active link styling */
+
+
+
+
+      .custom-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+
+
+
+
+      .menu-toggle-btn {
+        background-color: #0056b3;
+        color: white;
+        border: none;
+        padding: 6px 10px;
+        border-radius: 6px;
+        margin: 10px 12px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+      }
+      .menu-toggle-btn:hover {
+        background-color: #003d80;
+        transform: scale(1.1);
+      }
+
+
+
+
+
+
+      .collapse-btn {
+        display: flex;
+        justify-content: flex-end;
+      }
+
+
+
+
+
+
+      .ant-menu-item-selected {
+        background-color: #1058ff26 !important;
+        border-radius: none !important;
+
+     
+      }
+
+ 
+
+
+.ant-menu-item:hover nz-icon {
+    color: #1f53ff;
+
+    font-size: 22px;      /* Change icon size */
+
+    text-shadow:
+    1px 1px 2px #1f53ff,
+    0 0 5px #1f53ff,
+    0 0 10px #1f53ff;  
+  
+  }
+
+
+
+  /* Style the submenu container */
+
+
+  /* Customize the icon */
+
+  /*
+  nz-submenu nzTitle="students" nzIcon="user"*/
+
+
+
+  
+
+
+
+
+</style>
+
+<div class="wrapper">
+
+
+
+
+
+    <!-- User Info & Logout Button -->
+    <!-- User Info & Avatar -->
+    <div class="user-info-footer" *ngIf="!isCollapsed" style="display: flex; justify-content: center; padding: 12px 0;">
+        <div [routerLink]="['/Profile']" class="user-details" style="cursor:pointer;">
+            <nz-avatar nzSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEan2MdKi7N57D2ZeaZ7Y3iUauNq99Tdopcw&s"
+                class="custom-avatar">
+            </nz-avatar>
+        </div>
+    </div>
+
+
+
+
+    <!-- Floating Button to Toggle Sidebar -->
+
+
+    <button class="menu-toggle-btn" (click)="toggleCollapsed()">
+        <nz-icon *ngIf="isCollapsed" nzType="bars" nzTheme="outline"></nz-icon>
+        <nz-icon *ngIf="!isCollapsed" nzType="close" nzTheme="outline"></nz-icon>
+    </button>
+
+    <!-- Scrollable Menu List -->
+    <ul nz-menu nzMode="inline" nzTheme="light" [nzInlineCollapsed]="isCollapsed" *ngIf="isWrapperVisible"
+        class="menu-list  custom-submenu">
+  
+        <!-- Menu Items -->
+        <li nz-menu-item nz-tooltip nzTooltipPlacement="right" [nzTooltipTitle]="isCollapsed ? 'ផ្ទាំងគ្រប់គ្រង' : ''"
+            nzSelected>
+            <nz-icon nzType="pie-chart" nzTheme="outline" />
+            <span>
+                <a [routerLink]="['/dashboard']" routerLinkActive="router-link-active">ផ្ទាំងគ្រប់គ្រង</a>
+            </span>
+        </li>
+
+   
+
+
+     
+
+        <!-- Control Management Submenu -->
+        <li nz-submenu nzTitle="កាលវិភាគ" nzIcon="calendar"  class="custom-submenu">
+
+            <ul>
+                <li nz-menu-item
+         nz-tooltip nzTooltipPlacement="right" [nzTooltipTitle]="isCollapsed ? 'ក្រប់គ្រង កាលវិភាគ លុប បង្កើត ទាញយក' : ' ក្រប់គ្រង កាលវិភាគ លុប បង្កើត ទាញយក '"
+
+                >
+                    <nz-icon nzType="file-text" nzTheme="outline" />
+                    <a [routerLink]="['/timetables']" routerLinkActive="router-link-active">កាលវិភាគ</a>
+                </li>
+
+                <li nz-menu-item
+                                nz-tooltip nzTooltipPlacement="right" [nzTooltipTitle]="isCollapsed ? 'កាលវិភាគរបស់ម្ចាស acont' : ' កាលវិភាគសាធាណ acont'"
+
+                >
+                    <nz-icon nzType="file-text" nzTheme="outline" />
+
+                    <a [routerLink]="['/printTeacher']" routerLinkActive="router-link-active">កាលវិភារបស់ខ្ញុំ</a>
+
+                    
+                </li>
+
+
+                <li nz-menu-item
+
+
+                nz-tooltip nzTooltipPlacement="right" [nzTooltipTitle]="isCollapsed ? 'កាលវិភាគសាធាណោ' : ' កាលវិភាគសាធាណ'"
+                >
+                    <nz-icon nzType="file-text" nzTheme="outline" />
+                
+                    <a [routerLink]="['/t']" routerLinkActive="router-link-active">កាលវិភាគសាធាណ:</a>
+                
+                </li>
+
+
+
+               
+
+
+
+           
+            </ul>
+        </li>
+
+
+
+
+
+
+
+
+        <li nz-menu-item nz-tooltip nzTooltipPlacement="right" [nzTooltipTitle]="isCollapsed ? 'គ្រូ' : '  គ្រប់គ្រងគ្រូរ កំណាត់ម៉ោងបង្រៀន'"
+
+       
+
+               
+               
+
+
+        >
+            <nz-icon nzType="team" nzTheme="outline" />
+            <span >
+                <a [routerLink]="['/management-teacher']" routerLinkActive="router-link-active">គ្រូ</a>
+            </span>
+        </li>
+
+        <!-- Control Management Submenu -->
+        <li nz-submenu nzTitle="គ្រប់គ្រង" nzIcon="folder">
+            <ul>
+                <li nz-menu-item>
+                    <nz-icon nzType="file-text" nzTheme="outline" />
+                    <a [routerLink]="['/facultie']" routerLinkActive="router-link-active">មហាវិទ្យាល័យ</a>
+                </li>
+                <li nz-menu-item>
+                    <nz-icon nzType="file-text" nzTheme="outline" />
+                    <a [routerLink]="['/department']" routerLinkActive="router-link-active">ដេប៉ាត់ដេម៉ង់</a>
+                </li>
+
+
+                <li nz-menu-item>
+                    <nz-icon nzType="file-text" nzTheme="outline" />
+                    <a [routerLink]="['/major']" routerLinkActive="router-link-active">ជំនាញ</a>
+                </li>
+                
+
+                <li nz-menu-item>
+                    <nz-icon nzType="file-text" nzTheme="outline" />
+                    <a [routerLink]="['/subjects']" routerLinkActive="router-link-active">មុខវិជ្ជា</a>
+                </li>
+                <li nz-menu-item>
+                    <nz-icon nzType="file-text" nzTheme="outline" />
+                    <a [routerLink]="['/room']" routerLinkActive="router-link-active">បន្ទប់</a>
+                </li>
+                <li nz-menu-item>
+                    <nz-icon nzType="file-text" nzTheme="outline" />
+                    <a [routerLink]="['/studysession']" routerLinkActive="router-link-active">វេនសិក្សា</a>
+                </li>
+            </ul>
+        </li>
+
+
+
+
+        <hr>
+        <!-- Students Link Submenu -->
+        <li nz-submenu nzTitle="students" nzIcon="user">
+            <ul>
+                <li nz-menu-item>
+                    <nz-icon nzType="file-text" nzTheme="outline" />
+                    <a [routerLink]="['/students']" routerLinkActive="router-link-active">students(v01) <nz-tag nzColor="orange"
+                            style="margin-left: 8px;">
+                            <nz-icon nzType="tool" style="margin-right: 4px;"></nz-icon>
+                            កំពុងអភិវឌ្ឍន៍ </nz-tag>
+        
+                    </a>
+                </li>
+                <li nz-menu-item>
+                    <nz-icon nzType="file-text" nzTheme="outline" />
+                    <a [routerLink]="['/tblstudens']" routerLinkActive="router-link-active">tblstudens(v02)
+                        <nz-tag nzColor="orange" style="margin-left: 8px;">
+                            <nz-icon nzType="tool" style="margin-right: 4px;"></nz-icon>
+                            កំពុងអភិវឌ្ឍន៍ </nz-tag>
+        
+                    </a>
+                </li>
+        
+                <li nz-menu-item>
+                    <nz-icon nzType="file-text" nzTheme="outline" />
+                    <a [routerLink]="['/Reportstudents']" routerLinkActive="router-link-active">tblstudens(v02)
+                        <nz-tag nzColor="orange" style="margin-left: 8px;">
+                            <nz-icon nzType="tool" style="margin-right: 4px;"></nz-icon>
+                            Reportstudents </nz-tag>
+        
+                    </a>
+                </li>
+        
+        
+            </ul>
+        </li>
+
+
+        <!-- Score Management Submenu -->
+        <li nz-submenu nzTitle="ពិន្ទុ" nzIcon="folder">
+            <ul>
+                <li nz-menu-item>
+                    <nz-icon nzType="file-text" nzTheme="outline" />
+                    <a [routerLink]="['/score']" routerLinkActive="router-link-active">
+                        ដាក់ពិន្ទុ 
+                    
+                        <nz-tag nzColor="orange" style="margin-left: 8px;">
+                            <nz-icon nzType="tool" style="margin-right: 4px;"></nz-icon>
+                            កំពុងអភិវឌ្ឍន៍        
+                         </nz-tag>
+
+
+                    </a>
+                </li>
+                <li nz-menu-item>
+                    <nz-icon nzType="file-text" nzTheme="outline" />
+                    <a [routerLink]="['/exams']" routerLinkActive="router-link-active">ពេលវេលាប្រឡង
+
+                        <nz-tag nzColor="orange" style="margin-left: 8px;">
+                            <nz-icon nzType="tool" style="margin-right: 4px;"></nz-icon>
+                            កំពុងអភិវឌ្ឍន៍         </nz-tag>
+
+                    </a>
+                </li>
+                <li nz-menu-item>
+                    <nz-icon nzType="file-text" nzTheme="outline" />
+                    <a [routerLink]="['/score_types']" routerLinkActive="router-link-active">ប្រភេទពិន្ទុក
+
+                        <nz-tag nzColor="orange" style="margin-left: 8px;">
+                            <nz-icon nzType="tool" style="margin-right: 4px;"></nz-icon>
+                            កំពុងអភិវឌ្ឍន៍         </nz-tag>
+                    </a>
+                </li>
+                <li nz-menu-item>
+                    <nz-icon nzType="file-text" nzTheme="outline" />
+                    <a [routerLink]="['/totalscore']" routerLinkActive="router-link-active">លទ្ធផលពិន្ទុក
+
+                        <nz-tag nzColor="orange" style="margin-left: 8px;">
+                            <nz-icon nzType="tool" style="margin-right: 4px;"></nz-icon>
+                            កំពុងអភិវឌ្ឍន៍         </nz-tag>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li nz-submenu nzTitle="របាយការណ៍សាកលវិទ្យាល័យ" nzIcon="folder">
+            <ul>
+
+                <!-- និស្សិត -->
+                <li nz-submenu nzTitle="និស្សិត" nzIcon="team">
+                    <ul>
+                        <li nz-menu-item (click)="showProFeature()"  style="color: gray;">
+                            <span>លទ្ធផលសិក្សា</span>
+                            <nz-tag nzColor="warning" style="margin-left: 8px;">
+                            
+                                <nz-icon nzType="lock"></nz-icon>
+                                PRO
+                                </nz-tag>
+                        </li>
+                        <li nz-menu-item (click)="showProFeature()" style="color: gray;">
+
+               
+                            <span>ប្រឡងសង</span>
+
+                        <nz-tag nzColor="warning" style="margin-left: 8px;">
+
+                            <nz-icon nzType="lock"></nz-icon>
+                            PRO
+                        </nz-tag>
+
+                        </li>
+                        <li nz-menu-item (click)="showProFeature()" style="color: gray;">
+                            <span>ចុះឈ្មោះ</span>
+                            <nz-tag nzColor="warning">
+                            
+                                <nz-icon nzType="lock"></nz-icon>
+                                PRO
+                                </nz-tag>
+
+                        </li>
+                        <li nz-menu-item (click)="showProFeature()" style="color: gray;">
+                            <span>និស្សិតបោះបង់</span>
+                            <nz-tag nzColor="warning">
+                            
+                                <nz-icon nzType="lock"></nz-icon>
+                                PRO
+                                </nz-tag>
+
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- គ្រូបង្រៀន -->
+                <li nz-submenu nzTitle="គ្រូបង្រៀន" nzIcon="user">
+                    <ul>
+                        <li nz-menu-item (click)="showProFeature()" style="color: gray;">
+                            <span>សមិទ្ធផល</span>
+                            <nz-tag nzColor="warning">
+                            
+                                <nz-icon nzType="lock"></nz-icon>
+                                PRO
+                                </nz-tag>
+
+                        </li>
+                        <li nz-menu-item (click)="showProFeature()" style="color: gray;">
+                            <span>គ្មានថ្នាក់បង្រៀន</span>
+                            <nz-tag nzColor="warning">
+                            
+                                <nz-icon nzType="lock"></nz-icon>
+                                PRO
+                                </nz-tag>
+
+                        </li>
+                        <li nz-menu-item (click)="showProFeature()" style="color: gray;">
+                            <span>វត្តមានគ្រូ</span>
+                            <nz-tag nzColor="warning">
+                            
+                                <nz-icon nzType="lock"></nz-icon>
+                                PRO
+                                </nz-tag>
+
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- មុខវិជ្ជា -->
+                <li nz-submenu nzTitle="មុខវិជ្ជា" nzIcon="book">
+                    <ul>
+                        <li nz-menu-item (click)="showProFeature()" style="color: gray;">
+                            <span>ចែកចាយ</span>
+                            <nz-tag nzColor="warning">
+                            
+                                <nz-icon nzType="lock"></nz-icon>
+                                PRO
+                                </nz-tag>
+
+                        </li>
+                        <li nz-menu-item (click)="showProFeature()" style="color: gray;">
+                            <span>លទ្ធផលតាមមុខវិជ្ជា</span>
+                            <nz-tag nzColor="warning">
+                            
+                                <nz-icon nzType="lock"></nz-icon>
+                                PRO
+                                </nz-tag>
+
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- វេនសិក្សា / ឆមាស -->
+                <li nz-submenu nzTitle="វេនសិក្សា/ឆមាស" nzIcon="calendar">
+                    <ul>
+                        <li nz-menu-item (click)="showProFeature()" style="color: gray;">
+                            <span>លទ្ធផលឆមាស</span>
+                            <nz-tag nzColor="warning">
+                            
+                                <nz-icon nzType="lock"></nz-icon>
+                                PRO
+                                </nz-tag>
+
+                        </li>
+                        <li nz-menu-item (click)="showProFeature()" style="color: gray;">
+                            <span>ចុះឈ្មោះឆមាស</span>
+                            <nz-tag nzColor="warning">
+                            
+                                <nz-icon nzType="lock"></nz-icon>
+                                PRO
+                                </nz-tag>
+
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- កាលវិភាគ & ប្រឡង -->
+                <li nz-submenu nzTitle="កាលវិភាគ & ប្រឡង" nzIcon="schedule">
+                    <ul>
+                        <li nz-menu-item (click)="showProFeature()" style="color: gray;">
+                            <span>ពេលវេលាប្រឡង</span>
+                            <nz-tag nzColor="warning">
+                            
+                                <nz-icon nzType="lock"></nz-icon>
+                                PRO
+                                </nz-tag>
+
+                        </li>
+                        <li nz-menu-item (click)="showProFeature()" style="color: gray;">
+                            <span>លទ្ធផលប្រឡង</span>
+                            <nz-tag nzColor="warning">
+                            
+                                <nz-icon nzType="lock"></nz-icon>
+                                PRO
+                                </nz-tag>
+                        </li>
+                        <li nz-menu-item (click)="showProFeature()" style="color: gray;">
+                            <span>ប្រឡងជំនួស</span>
+                            <nz-tag nzColor="warning">
+                            
+                                <nz-icon nzType="lock"></nz-icon>
+                                PRO
+                                </nz-tag>
+
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- ប្រៀបធៀប -->
+                <li nz-submenu nzTitle="ប្រៀបធៀប" nzIcon="bar-chart">
+                    <ul>
+                        <li nz-menu-item (click)="showProFeature()" style="color: gray;">
+                            <span>មហាវិទ្យាល័យ</span>
+                            <nz-tag nzColor="warning">
+                            
+                                <nz-icon nzType="lock"></nz-icon>
+                                PRO
+                                </nz-tag>
+
+                        </li>
+                        <li nz-menu-item (click)="showProFeature()" style="color: gray;">
+                            <span>ដេប៉ាតឺម៉ង់</span>
+                            <nz-tag nzColor="warning">
+                            
+                                <nz-icon nzType="lock"></nz-icon>
+                                PRO
+                                </nz-tag>
+
+                        </li>
+                        <li nz-menu-item (click)="showProFeature()" style="color: gray;">
+                            <span>ជំនាញ</span>
+                            <nz-tag nzColor="warning">
+                            
+                                <nz-icon nzType="lock"></nz-icon>
+                                PRO
+                                </nz-tag>
+
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </li>
+
+
+
+
+
+
+
+
+
+    </ul>
+
+
+<!-- User Info & Logout Button -->
+<div class="user-info-footer"
+    style="display: flex; justify-content: space-around; align-items: center; padding: 8px 16px;">
+
+    <div   [routerLink]="['/Profile']" class="user-details"   style="display: flex; align-items: center; gap: 8px; cursor: pointer;"
+    *ngIf="!isCollapsed">
+        <nz-avatar nzIcon="user" nzSize="small"></nz-avatar>
+        <span class="username" *ngIf="teacherDetails">{{teacherDetails.name}}  </span>
+    
+
+    </div>
+
+
+
+    <button nz-button nzType="default" style="background-color: #5dabff; color:#e6f7ff; border:none;  border-radius: 100px; " class="logout-btn"  (click)="logout()" >
+        <nz-icon nzType="logout"></nz-icon> 
+        <span *ngIf="!isCollapsed">ចាកចេញ</span>
+    </button>
+
+</div>
+
+
+<a href="https://portfolio-heng.netlify.app/" target="_blank" rel="noopener" 
+    style="display: flex; align-items: center;justify-content: space-around;  gap: 8px; cursor: pointer; padding: 8px 16px;" *ngIf="!isCollapsed">
+    <span  *ngIf="teacherDetails" style="font-family: Roboto; color: #ffffff;"> © Puyvong Heng 2024 </span>
+</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+

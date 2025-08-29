@@ -1,0 +1,23 @@
+<div class="container mt-4  absolute" style="background-color: white; border-radius: 10px; padding: 20px;
+ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+
+<p-table [value]="score_types" [paginator]="true" [rows]="5" responsiveLayout="scroll">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Max Score</th>
+            <th>Weight</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-score>
+        <tr>
+            <td>{{ score.id }}</td>
+            <td>{{ score.name }}</td>
+            <td>{{ score.max_score }}</td>
+            <td>{{ score.weight }}</td>
+        </tr>
+    </ng-template>
+</p-table>
+
+</div>

@@ -1,0 +1,276 @@
+
+
+
+<div class="card-container container  mt-4  absolute" >
+    <div class="card">
+        <div class="card-content">
+            <div class="text">
+                <span class="title">មហាវិទ្យាល័យ</span>
+                <br>
+                <span class="percentage">{{faculties.length}}</span>
+            </div>
+            <div class="icon-container" >
+                
+        
+         <p-button icon="pi pi-graduation-cap" class="mr-2" [rounded]="true" [outlined]="true" />
+
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-content">
+            <div class="text">
+                <span class="title">ដេប៉ាតេម៉ង</span>
+                <br>
+                <span class="percentage">{{departments.length}}</span>
+            </div>
+            <div class="icon-container">
+                <p-button icon="pi pi-graduation-cap" class="mr-2" [rounded]="true" [outlined]="true" />
+
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-content">
+            <div class="text">
+                <span class="title">ជំនាញ</span>
+                <br>
+
+                <span class="percentage">{{majors.length}}</span>
+            </div>
+            <div class="icon-container" >
+                <p-button icon="pi pi-graduation-cap" class="mr-2" [rounded]="true" [outlined]="true" />
+
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-content">
+            <div class="text">
+                <span class="title">បន្ទប់</span>
+                <br>
+                <span class="percentage">{{rooms.length}}</span>
+            </div>
+            <div class="icon-container" >
+           
+
+            <p-button icon="pi pi-building" class="mr-2" [rounded]="true" [outlined]="true" />
+
+           
+            </div>
+        </div>
+    </div>
+
+
+
+  
+
+
+    <div class="card">
+        <div class="card-content">
+            <div class="text">
+                <span class="title">មុខវិជ្ជា</span>
+                <br>
+                <span class="percentage">{{subjects.length}}</span>
+            </div>
+            <div class="icon-container" >
+    
+  
+
+                    <p-button icon="pi pi-book" class="mr-2" [rounded]="true" [outlined]="true" />
+
+    
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card">
+        <div class="card-content">
+            <div class="text">
+                <span class="title">គ្រូ</span>
+                <br>
+                <span class="percentage">{{teachers.length}}</span>
+            </div>
+            <div class="icon-container">
+                <p-button icon="pi pi-user" class="mr-2" [rounded]="true" [outlined]="true" />
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+
+<style>
+    /* Card Layout */
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    gap: 16px;
+    padding: 20px;
+    background-color: #ffffff; /* Dark background */
+}
+
+/* Individual Card */
+.card {
+    width: 180px;
+    background: transparent;
+    border: 1px solid rgb(5, 197, 255);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease;
+}
+
+
+/* Card Content */
+.card-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Text Styling */
+.text .title {
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 14px;
+}
+
+.text .percentage {
+    font-size: 20px;
+    font-weight: bold;
+    color: #000000;
+}
+
+/* Icon Container */
+.icon-container {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Icons */
+.icon {
+    color: rgb(0, 0, 0);
+    font-size: 18px;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .card {
+        width: 100%;
+    }
+}
+
+</style>
+
+
+
+
+
+
+
+
+<style>
+    strong {
+        color: #007bff;
+    }
+
+    /* Custom styling for cards */
+    .card-custom {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Hover effect for cards */
+    .card-custom:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Styling for dashboard boxes */
+    .dashboard-box {
+        padding: 15px;
+        font-size: 1.1rem;
+        color: #333;
+        border-radius: 8px;
+        background-color: #ffffff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    /* Icon styling */
+    .icon-custom {
+        width: 50px;
+        /* Adjust size as needed */
+        height: 50px;
+        /* Adjust size as needed */
+        margin-bottom: 10px;
+    }
+
+    /* Custom background for the entire page */
+    body {
+        background-color: #f4f7fb;
+        font-family: 'Arial', sans-serif;
+    }
+
+    /* Styling the list items */
+    .list-group-item {
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+    }
+    /* Add a primary background color to list items */
+    .list-group-item:hover {
+        background-color: #007bff;
+        color: #fff;
+    }
+    .badge {
+        font-size: 0.9rem;
+        padding: 5px 10px;
+        margin: 2px;
+    }
+
+
+
+
+
+
+
+    /* Style for the count text */
+    .count-text {
+        font-size: 1.5rem;
+        /* Larger font size */
+        font-weight: bold;
+        /* Bold text */
+        color: #ff00b3;
+        /* Primary blue color */
+        margin-left: 5px;
+        /* Add some spacing */
+        background-color: #e9f5ff8b;
+        /* Light background color */
+        padding: 5px 10px;
+        /* Add padding */
+        border-radius: 5px;
+        /* Rounded corners */
+        display: inline-block;
+        /* Ensure it behaves like a block element */
+    }
+</style>

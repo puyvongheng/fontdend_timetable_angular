@@ -1,0 +1,90 @@
+
+
+
+
+
+
+
+
+
+<div class="container mt-4 absolute"
+    style="background-color: white; border-radius: 10px; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+<p-table #dt 
+[value]="filteredScoresByStudentId()" 
+
+responsiveLayout="scroll"
+ class="mt-4">
+    <ng-template #caption>
+        <div class="text-end pb-4">
+            <p-button icon="pi pi-external-link" label="Export" (click)="dt.exportCSV()" />
+        </div>
+    </ng-template>
+   
+    <ng-template pTemplate="caption">
+        <div class="flex justify-between items-center">
+            <div>
+                <h6>Total Students: {{ totalStudents | number }}</h6>
+                <div *ngFor="let data of majors_fillter">
+                    <h5>ជំនាញ: {{ data.major_name }}</h5>
+                </div>
+                <h6>ជំនាន់: {{ filters.generation }}</h6>
+                <h6>ឆ្នាំទី: {{ filters.batch }}</h6>
+                <h6>វេនសិក្សារ: {{ filters.shift_name }}</h6>
+
+                {{filters.exam_id}}
+            </div>
+
+
+            <div *ngIf="exam">
+                <p>
+                    <strong>កាប្រឡង:</strong> {{ exam.name }}<br>
+                    <strong>Semester:</strong> {{ exam.semester }}<br>
+                    <strong>Year:</strong> {{ exam.year }}<br>
+                    <strong>Date:</strong> {{ exam.date | date: 'fullDate' }}
+                </p>
+            </div>
+
+
+
+        </div>
+
+        
+    </ng-template>
+
+    <ng-template pTemplate="header">
+        <tr>
+            <th>ចំណាត់ថ្នាក់</th>
+            <th>គោត្តនាម-នាម {{filters_only_student_id}}</th>
+            <th *ngIf="filters_only_student_id">មុខវិជ្ជាប្រលង</th>
+            <th>ពិន្ទុកសរុប</th>
+            <th>មធ្យមភាគ</th>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-student>
+        <tr>
+            <td>{{ student.rank }}</td>
+            <td>{{ student.student_name || '-' }}</td>
+            <td *ngIf="filters_only_student_id">
+                <ul *ngIf="student.subjects?.length > 0; else noSubjects">
+                    <li *ngFor="let subject of student.subjects">
+                        <strong>{{ subject.subject_name || 'No Subject Name' }}</strong>
+                        <ul>
+                            <li *ngFor="let score of subject.scores">
+                                {{ score.score_type }}: {{ score.score_total }}
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ng-template #noSubjects><i>No subjects</i></ng-template>
+            </td>
+            <td>{{ student.total_score }}</td>
+            <td>{{ (student.total_score / 3) | number: '1.2-2' }}</td>
+        </tr>
+    </ng-template>
+</p-table>
+
+</div>
+
+
+

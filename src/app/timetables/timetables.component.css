@@ -1,0 +1,80 @@
+
+
+
+
+
+
+
+.filter-container {
+    width: 100%;
+    padding: 10px;
+    /* Add some padding around the container */
+    overflow-x: auto;
+    /* Enable horizontal scrolling if needed */
+    margin-bottom: 1rem;
+}
+
+.filter-row {
+    display: flex;
+    /* Use Flexbox for layout */
+    flex-wrap: wrap;
+    /* Allow items to wrap to the next line */
+    gap: 10px;
+    /* Add spacing between items */
+    align-items: center;
+    /* Vertically center items */
+}
+
+.filter-select {
+    flex: 1 1 auto;
+    /* Grow, shrink, and have an initial basis */
+    min-width: 60px;
+    /* Minimum width to prevent extreme shrinking */
+}
+
+.filter-button {
+    flex: 0 0 auto;
+    /* Don't grow or shrink, keep initial size */
+    white-space: nowrap;
+    /* Prevent text from wrapping */
+}
+
+.button-text {
+    display: none;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+
+    /* Adjust breakpoint as needed */
+    .filter-row {
+        flex-direction: column;
+        /* Stack items vertically */
+    }
+
+    .filter-select,
+    .filter-button {
+        width: 100%;
+        /* Full width on mobile */
+        min-width: 0;
+        /* Allow buttons and selects to be full width */
+    }
+
+    .button-text {
+        display: inline;
+        /* Display text on mobile */
+        margin-left: 5px;
+        /* Space between icon and text */
+    }
+}
+
+/* Slightly larger screens */
+@media (min-width: 769px) and (max-width: 1024px) {
+
+    .button-text {
+        display: inline;
+        /* Display text on mobile */
+        margin-left: 5px;
+        /* Space between icon and text */
+    }
+}

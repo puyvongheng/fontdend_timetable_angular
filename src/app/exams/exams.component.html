@@ -1,0 +1,30 @@
+
+<div class="container mt-4  absolute" style="background-color: white; border-radius: 10px; padding: 20px;
+ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+<p-table [value]="exams" [paginator]="true" [rows]="5" responsiveLayout="scroll">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Semester</th>
+            <th>Year</th>
+            <th>Date</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-exam>
+        <tr>
+            <td>{{ exam.id }}</td>
+            <td>{{ exam.name }}</td>
+            <td>{{ exam.semester }}</td>
+            <td>{{ exam.year }}</td>
+            <td>{{ exam.date | date: 'yyyy-MM-dd' }}</td>
+        </tr>
+    </ng-template>
+</p-table>
+
+</div>
+
+
+
+
+

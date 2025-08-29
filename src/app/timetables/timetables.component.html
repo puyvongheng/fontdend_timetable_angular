@@ -1,0 +1,1092 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <button    
+         nzShape="round"
+         nz-button
+         nzType="primary"
+         (click)="toggleSection()">
+        {{ show_filter ? 'បិទ filter' : 'បង្ហាញ filter' }}
+    </button>
+    
+  
+
+<div    *ngIf="show_filter"   >
+        <div class="row g-2">
+            <!-- Year Filter -->
+            <div class="col-sm-6 col-md-4 col-lg-3 filter-item">
+        <nz-select class="w-100" nzShowSearch nzAllowClear nzPlaceHolder="Year" [(ngModel)]="filterYear"
+           nz-tooltip nzTooltipTitle="ឆ្នាំសិក្សារ  "
+                [nzTooltipColor]="colors"
+        
+    
+            >
+            <nz-option *ngFor="let year of options.years" [nzLabel]="year.years" [nzValue]="year.years.toString()">
+                {{ year.years }}
+            </nz-option>
+        </nz-select>
+
+            </div>
+
+            <!-- Semester Filter -->
+            <div class="col-sm-6 col-md-4 col-lg-3 filter-item">
+                <nz-select class="w-100" nzShowSearch nzAllowClear nzPlaceHolder="Semester" 
+                (ngModelChange)="  Change()"
+                    [(ngModel)]="filterSemester"
+
+                        nz-tooltip nzTooltipTitle="ឆមាស  "
+                [nzTooltipColor]="colors"
+
+                    >
+                    <nz-option *ngFor="let semester of options.semester" [nzLabel]="semester.semester"
+                        [nzValue]="semester.semester.toString()">
+                        {{ semester.semester }}
+                    </nz-option>
+                </nz-select>
+            </div>
+        
+
+            <!-- Major Filter -->
+            <div class="col-sm-6 col-md-4 col-lg-3 filter-item">
+                <nz-select class="w-100" nzShowSearch nzAllowClear nzPlaceHolder="Major" 
+                (ngModelChange)="  Change()"
+                    [(ngModel)]="filterMajorName"
+                                 nz-tooltip nzTooltipTitle="ជាំនាញ  "
+                [nzTooltipColor]="colors"
+                    >
+                    <nz-option *ngFor="let major of options.major" [nzLabel]="major.major_name" [nzValue]="major.major_id.toString()">
+                        {{ major }}
+                    </nz-option>
+                </nz-select>
+            </div>
+
+            <!-- Study Shift Filter -->
+            <div class="col-sm-6 col-md-4 col-lg-3 filter-item">
+                <nz-select class="w-100" nzShowSearch nzAllowClear nzPlaceHolder="Study Shift"
+                (ngModelChange)="  Change()"
+                    [(ngModel)]="filterStudyShift"
+
+                      nz-tooltip nzTooltipTitle="វេនសិក្សារ  "
+                [nzTooltipColor]="colors"
+
+                    >
+                    <nz-option *ngFor="let shift of options.shift_name" [nzLabel]="shift.shift_name"
+                        [nzValue]="shift.shift_name.toString()">
+                    </nz-option>
+                    <nz-option  [nzLabel]="'all'"
+                        [nzValue]="''">
+                    </nz-option>
+                </nz-select>
+            </div>
+            
+    <!-- Add a button to clear query parameters -->
+
+    <!-- Generation Filter -->
+            <div class="col-sm-6 col-md-4 col-lg-3 filter-item">
+                <nz-select class="w-100" nzShowSearch nzAllowClear nzPlaceHolder="Generation"
+                (ngModelChange)="  Change()"
+                    [(ngModel)]="filterGeneration"
+
+                    
+                      nz-tooltip nzTooltipTitle="ជំនាន  "
+                [nzTooltipColor]="colors"
+
+
+                    >
+                    <nz-option *ngFor="let generation of options.generation" [nzLabel]="generation.generation.toString()"
+                        [nzValue]="generation.generation.toString()">
+                
+                    </nz-option>
+
+                    
+
+                </nz-select>
+            </div>
+
+            <!-- Batch Filter -->
+            <div class="col-sm-6 col-md-4 col-lg-3 filter-item">
+                <nz-select class="w-100" nzShowSearch nzAllowClear nzPlaceHolder="Batch" 
+                (ngModelChange)=" Change()"
+                    [(ngModel)]="filterBatch"
+
+                    
+                      nz-tooltip nzTooltipTitle="និស្សិឆ្នាំទី  "
+                [nzTooltipColor]="colors"
+
+                    >
+                    <nz-option *ngFor="let batch of options.batch" [nzLabel]="batch.batch.toString()"
+                        [nzValue]="batch.batch.toString()">
+                        {{ batch.batch }}
+                    </nz-option>
+                </nz-select>
+            </div>
+
+            <!-- Group Student Filter -->
+            <div class="col-sm-6 col-md-4 col-lg-3 filter-item">
+                <nz-select class="w-100" nzShowSearch nzAllowClear nzPlaceHolder="Group Student" name="filterGroupStudent"
+                (ngModelChange)="  Change()"
+                    [(ngModel)]="filterGroupStudent"
+
+                    
+                    
+                      nz-tooltip nzTooltipTitle="ក្រុម  "
+                [nzTooltipColor]="colors"
+
+
+                    >
+                    <nz-option *ngFor="let group of options.group_student" [nzLabel]="group.group_student"
+                        [nzValue]="group.group_student.toString()">
+                        {{ group.group_student }}
+                    </nz-option>
+                </nz-select>
+            </div>
+
+            <!-- Teacher Filter -->
+            <div class="col-sm-6 col-md-4 col-lg-3 filter-item">
+                <nz-select class="w-100" nzShowSearch nzAllowClear nzPlaceHolder="Teacher" name="filterTeacher"
+                            (ngModelChange)=" Change()"
+
+                    [(ngModel)]="filterTeacher"
+
+                          nz-tooltip nzTooltipTitle="គ្រូរ  "
+                [nzTooltipColor]="colors"
+
+
+
+                    >
+                    <nz-option *ngFor="let teacher of options.teacher" [nzLabel]="teacher.teacher_name"
+                        [nzValue]="teacher.teacher_id.toString()">
+                        {{ teacher.teacher_name }}
+                    </nz-option>
+                </nz-select>
+            </div>
+
+            <!-- Room Filter -->
+            <div class="col-6 col-md-4 col-lg-3">
+                <nz-select class="w-100" nzShowSearch nzAllowClear nzPlaceHolder="Room" name="filterRoom"
+                (ngModelChange)="  Change()"
+
+                
+                          nz-tooltip nzTooltipTitle="បន្ទប់   "
+                [nzTooltipColor]="colors"
+
+                    [(ngModel)]="filterRoom">
+                    <nz-option *ngFor="let room of options.room" [nzLabel]="room.room_number" [nzValue]="room.room_id">
+                        {{ room }}
+                    </nz-option>
+                </nz-select>
+            </div>
+
+        <!-- Filter Buttons -->
+        <div class="col-12 filter-button-group">
+           
+
+            <button class="filter-button" nz-button nzType="primary" nzShape="round" (click)="filterTimetables() ;   this.loadTimetables()" nz-tooltip
+                nzTooltipTitle="ស្វែងរក/search" [nzTooltipColor]="colors">
+                <i class="fa fa-search" aria-hidden="true"></i>
+                <span class="button-text">ស្វែងរក</span>
+            </button>
+
+
+          
+            <button class="filter-button" nz-button nzType="primary" nzShape="round" (click)="clearFilters()"
+                style="background-color: rgba(255, 23, 23, 0.71); border: none;" 
+                nz-tooltip nzTooltipTitle="លុប /delet    fillter  "
+                [nzTooltipColor]="colors"
+                >
+                <i class="fa fa-times-circle" aria-hidden="true"></i>
+                <span class="button-text">លុប</span>
+            </button>
+           
+        </div>
+    </div>
+</div>
+                <div *ngFor="let entry of selectedEntries; let i = index">
+                    <nz-tag nzColor="processing" nzMode="closeable" (nzOnClose)="onClose(i)">
+                        {{ entry.timeRange }} {{ entry.day }} {{ entry.subject_name }} ( {{ findTeacher(entry.teacher_id) }})  {{entry.room_number}}
+                    </nz-tag>
+                </div>
+<br>
+
+
+<!--group btn tool -->
+    <div class="button-group" style="margin-top: 10px; margin-bottom: 10px;border-radius:100px;background: radial-gradient(circle, rgb(38, 38, 255) 35%, rgba(0,212,255,1) 100%);
+    padding: 10px ;
+
+            " >
+        <button  nzShape="round"  nz-button 
+        nz-tooltip nzTooltipTitle="បង្កើតថ្មី"
+        [nzTooltipColor]="colors"
+            (click)="addnew() ;showModaltrue()"><nz-icon nzType="plus" nzTheme="outline" />បង្កើត</button>
+    
+
+            <button  
+            nz-tooltip
+            nzTooltipTitle="លុប ម្តងទាំងអស់"
+            [nzTooltipColor]="colors"
+            nzShape="round"
+            nz-button
+    
+            (click)="showModadelet()">
+                <nz-icon nzType="delete" nzTheme="outline"/> លុប
+            </button>
+            
+
+
+                
+
+                
+
+                            <button nz-button   [nzLoading]="loading_download"
+                            (click)="downloadTimetable()"
+                                [disabled]="loading_download"
+                                nzShape="round"
+
+
+                                nz-tooltip
+                nzTooltipTitle="ទាញយក កាវិភាគទាំងអស់ ជាzip file (html file ) សម្រាប់យកទៅ convert to pdf  រី  user អាច កែប្រែដូច  dox file " [nzTooltipColor]="colors"
+
+                                >
+                                <span *ngIf="loading_download"> download... </span>
+                                <span class="ms-1" *ngIf="!loading_download"> 
+                                                        <nz-icon nzType="download" nzTheme="outline" />
+                                    ទាញយក</span>
+                            </button>
+
+                <button  nzShape="round" *ngIf="selectedEntries.length === 2" nz-button
+
+                nz-tooltip nzTooltipTitle=" ផ្តូរ តែគ្រូជាមួយមុខវិជ្ជាទេ 🔄️  "
+                [nzTooltipColor]="colors"
+                    nzType="default" (click)="swapTeachers()">
+                    ផ្តូរ គ្នារ(គ្រូរ មុខវិជ្ជា) <nz-icon nzType="retweet" nzTheme="outline" style="color: chocolate;" />
+                </button>
+                
+                <button  nzShape="round" *ngIf="selectedEntries.length === 2" nz-button     
+                nz-tooltip nzTooltipTitle=" ផ្តូ តែបន្ទប់ទេ មិនប៉ះពាល់ អីផ្សេងទេ 🔄️  "
+                [nzTooltipColor]="colors"
+                    nzType="default" (click)="swaprooms()">
+                    ផ្តូរ គ្នារ(room) <nz-icon nzType="retweet" nzTheme="outline" style="color: chocolate;" />
+                </button>
+
+
+                <button  nzShape="round" *ngIf="selectedEntries.length === 1" nz-button
+                (click)=" showModal3()"
+                        nz-tooltip nzTooltipTitle=" ដូរទៅបន្ទប់ដែលថ្មីមិនទានមានអ្នកណារៀន 🆕   មិនទាន់ហើយ " [nzTooltipColor]="colors" nzType="default"
+                    >
+                        ដូរបន្ទប់ <nz-icon nzType="retweet" nzTheme="outline" style="color: chocolate;" />
+                </button>
+
+   
+            </div>
+    
+
+
+<style>
+
+.button-group {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.rounded-table {
+    border-collapse: separate; /* Important! */
+    border-spacing: 0;       /*  Control space between cells (optional, but often desired) */
+    border: 1px solid #ffffff;    /*  Add a border to the whole table */
+    border-radius: 10px;     /*  Apply the border-radius */
+    overflow: hidden;      /*  Crucial: Prevents content from spilling outside the rounded corners*/
+}
+/* Style *all* cells in the first row (top row) */
+.rounded-table tr:first-child th {
+    border: 1px solid #0d6bc8d8;      /* Apply the special border */
+    border-bottom: none;         /* Remove the bottom border */
+    background:#1890FF;
+    color: white;
+}
+/* Style the first cell of *all* rows (left column) */
+.rounded-table td:first-child,
+.rounded-table th:first-child{
+    background: #1890FF;
+    color: white;
+    border: 1px solid #0d6bc8d8;       /* Apply the special border */
+    border-right: none;          /* Remove the right border */
+}
+
+
+
+/*Rounded conners of table using radius*/
+.rounded-table tr:first-child th:first-child {
+    border-top-left-radius: 10px;
+
+}
+.rounded-table tr:first-child th:last-child {
+    border-top-right-radius: 10px;
+
+
+}
+.rounded-table tr:last-child td:first-child {
+    border-bottom-left-radius: 10px;
+
+}
+.rounded-table tr:last-child td:last-child {
+    border-bottom-right-radius: 10px;
+}
+
+
+@media (max-width: 768px) { /* Adjust breakpoint as needed */
+
+  .rounded-table {
+    border: none; /* Remove table border */
+  }
+
+  .rounded-table thead {
+    display: none; /* Hide the header */
+  }
+
+  .rounded-table tr {
+    display: block;
+    margin-bottom: 1em;
+    border: 1px solid #ccc;
+    border-radius: 10px; /* Rounded corners for each "card" */
+    padding: 10px; /* Add padding to the "card" */
+  }
+
+  .rounded-table td {
+    display: block;
+    border: none; /* Remove cell borders */
+    text-align: center; /* Left-align content */
+    padding: 0.1em 0;   /* Reduce padding */
+    border-radius: 30px;
+  }
+
+  /* Data Label Styling */
+  .rounded-table td:before {
+    content: attr(data-label) " "; /* Add a colon */
+    font-weight: bold;
+    display: block; /* Display label on its own line */
+    margin-bottom: 0.25em; /* Space between label and content */
+  }
+
+
+  /* Remove corner styling that's no longer relevant */
+  .rounded-table tr:first-child th:first-child,
+  .rounded-table tr:first-child th:last-child,
+  .rounded-table tr:last-child td:first-child,
+  .rounded-table tr:last-child td:last-child {
+    border-radius: 0;
+  }
+   /* Add rounded corners to first and last td in tr */
+    .rounded-table tr td:first-child{
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+    .rounded-table tr td:last-child{
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+
+
+
+  /* Button Group Styling */
+  .button-group {
+    margin-bottom: 0.5em; /* Space below buttons */
+    display: flex;       /* Use flexbox for button layout */
+    align-items: center; /* Vertically center buttons */
+    gap: 0.5em;         /* Space between buttons */
+  }
+
+  .button-group button {
+    /*  Additional button styling if needed */
+    margin-right: 0.5em; /* Consistent spacing */
+  }
+
+  .button-group label{
+    margin-left: auto; /* Push the checkbox to right*/
+  }
+
+  /* Entry Details Styling */
+  .entry-details p {
+    margin: 0.25em 0; /* Reduce paragraph spacing */
+  }
+   .entry-details p:first-child {
+        margin-top: 0; /* Remove margin from the very first paragraph */
+   }
+
+   .entry-details{
+    margin-top: 10px;/* Add margin from the very first paragraph */
+   }
+
+
+}
+
+ </style>
+
+<style>
+  
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        border: 1px dotted     rgb(0, 0, 0);
+        padding: 10px;
+        text-align: center;
+    }
+
+</style>
+
+
+
+
+<div *ngIf="message" class="alert alert-danger">{{ message.success }}</div>
+
+<div *ngIf="message" class="alert alert-danger">{{ message }}</div>
+<nz-skeleton *ngIf="isLoading" [nzActive]="true" [nzRound]="true" nzSize="large" [nzAvatar]="false"
+    [nzParagraph]="{ rows: 9 }">
+</nz-skeleton>
+
+<div *ngIf="isLoadingupdate" class="spinner-container">
+    <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+
+  
+<div class="timetable-container">
+    <table class="rounded-table" *ngIf="!isLoading" style="font-family: Battambang;">
+        <thead >
+            <tr >
+                <th data-label="Study Time">ម៉ោងសិក្សា/Study Time</th>
+                <th *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')" data-label="Monday">
+                    ថ្ងៃច័ន្ទ/Monday</th>
+                <th *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')" data-label="Tuesday">
+                    ថ្ងៃអង្គារ/Tuesday</th>
+                <th *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')" data-label="Wednesday">
+                    ថ្ងៃពុធ/Wednesday</th>
+                <th *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')" data-label="Thursday">
+                    ថ្ងៃព្រហស្បតិ៍/Thursday</th>
+                <th *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')" data-label="Friday">
+                    ថ្ងៃសុក្រ/Friday</th>
+                <th *ngIf="filterStudyShift === '' || filterStudyShift.includes('Saturday-Sunday')" data-label="Saturday">
+                    ថ្ងៃសៅរ៍/Saturday</th>
+                <th *ngIf="filterStudyShift === '' || filterStudyShift.includes('Saturday-Sunday')" data-label="Sunday">
+                    ថ្ងៃអាទិត្យ/Sunday</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let entry of groupedTimetables">
+
+                <td  data-label="Study Time">{{ entry.time }}</td>
+
+                <td *ngIf="entry.Monday ; else freeMonday ; " data-label="Monday">
+
+                    <button style="border: none; float: right;" (click)="showModal(entry.time, 'Monday') ; showModalfalse()">
+                        <span nz-tooltip nzTooltipTitle="Add"><nz-icon nzType="plus" nzTheme="outline" /></span>
+                    </button>
+
+                    <button style="border: none; float: right; " (click)="deleteTimetable(entry.Monday.id) ">
+                        <span nz-tooltip nzTooltipTitle="Delete"><nz-icon nzType="delete" nzTheme="outline" /></span>
+                    </button>
+
+                    <label nz-checkbox  style="border: none; float: right; width: 30px;"  (change)="toggleSelection(entry.Monday, 'Monday')"[nzDisabled]="selectedEntries.length === 2 && isMondayIdInSelectedEntries(entry.Monday.id)"></label>
+
+                    <br>
+                    <br>
+
+                    <div *ngIf="foundSession">
+                        <p><strong>Study Session ID:</strong> {{ foundSession.study_sessions_id }}</p>
+                        <p><strong>Shift Name:</strong> {{ foundSession.study_shift_name }}</p>
+                        <p><strong>Time:</strong> {{ foundSession.time }}</p>
+                    </div>
+                        ជំនាន់ : <nz-tag nzColor="purple" [nzBordered]="true">{{ entry.Monday.generation }}</nz-tag>
+                        ឆ្នាំទី : <nz-tag nzColor="purple" [nzBordered]="true">{{ entry.Monday.batch }}</nz-tag><br>
+                        ជំនាញ : {{ entry.Monday.major_name }}
+                        <br>
+                        មុខវិជ្ជា :{{ entry.Monday.subject_name }}/
+                        {{ findTeacher(entry.Monday.teacher_id) }}
+                    <div *ngIf="findRoom(entry.Monday.room_id) as room">
+                        <p nz-button nz-popover nzPopoverTitle=" Room:{{room.room_number}}" nzColor="purple"
+                            [nzPopoverContent]="contentTemplate"><nz-tag nzColor="purple"
+                                [nzBordered]="true">{{room.room_number }}</nz-tag></p>
+                            <ng-template #contentTemplate>
+                                <div>
+                                    <p>id: {{ room.id }}</p>
+                                    <p>Type: {{ room.room_type }}</p>
+                                    <p>Floor: {{ room.floor }}</p>
+                                    <p>capacity: {{ room.capacity }}</p>
+                                </div>
+                            </ng-template>
+                    ​</div>
+                </td>
+
+                <ng-template #freeMonday>
+                    <td *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')" data-label="Monday">
+                        <button nz-button (click)="showModal(entry.time, 'Monday'); showModalfalse()">Add this </button>
+                    </td>
+                </ng-template>
+
+
+
+                <td *ngIf="entry.Tuesday  ; else freeTuesday"  data-label="Tuesday">
+
+                    <button style="border: none; float: right;" (click)="showModal(entry.time, 'Tuesday') ; showModalfalse()">
+                            <span nz-tooltip nzTooltipTitle="Add"><nz-icon nzType="plus" nzTheme="outline" /></span>
+                    </button>
+
+                    <button style="border: none; float: right;" (click)="deleteTimetable(entry.Tuesday.id) ">
+                        <span nz-tooltip nzTooltipTitle="Delete"><nz-icon nzType="delete" nzTheme="outline" /></span>
+                    </button>
+
+                    <label  style="border: none; float: right; width: 30px;" nz-checkbox (change)="toggleSelection(entry.Tuesday, 'Tuesday')"></label>
+                  
+                    
+                    <br>
+                    <br>
+
+                    ជំនាន់ : <nz-tag nzColor="purple" [nzBordered]="true">{{ entry.Tuesday.generation}}</nz-tag>
+                    ឆ្នាំទី : <nz-tag nzColor="purple" [nzBordered]="true">{{ entry.Tuesday.batch }}</nz-tag><br>
+                    ជំនាញ : {{ entry.Tuesday.major_name }}<br>
+                   
+                    {{ entry.Tuesday.subject_name }} /
+                    {{ findTeacher(entry.Tuesday.teacher_id) }}<br>
+                    <div *ngIf="findRoom(entry.Tuesday.room_id) as room">
+                        <p nz-button nz-popover nzPopoverTitle=" Room:{{room.room_number}}" nzColor="purple"[nzPopoverContent]="contentTemplate"><nz-tag nzColor="purple"[nzBordered]="true">{{room.room_number }}</nz-tag></p>
+                        <ng-template #contentTemplate>
+                            <div>
+                                <p>id: {{ room.id }}</p>
+                                <p>Type: {{ room.room_type }}</p>
+                                <p>Floor: {{ room.floor }}</p>
+                                <p>capacity: {{ room.capacity }}</p>
+                            </div>
+                        </ng-template>
+                    </div>
+                </td>
+                <ng-template #freeTuesday >
+                    <td *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')" data-label="Tuesday">
+                        <button nz-button (click)="showModal(entry.time, 'Tuesday') ; showModalfalse()">Add</button>
+                    </td>
+                </ng-template>
+
+
+
+
+
+                <td *ngIf="entry.Wednesday ; else freeWednesday"  data-label="Wednesday">
+
+
+                    <button style="border: none; float: right;" (click)="showModal(entry.time, 'Wednesday') ; showModalfalse()">
+                        <span nz-tooltip nzTooltipTitle="Add">
+                            <nz-icon nzType="plus" nzTheme="outline" />
+                        </span>
+                    </button>
+
+
+                    <button style="border: none; float: right;" (click)="deleteTimetable(entry.Wednesday.id) ">
+                        <span nz-tooltip nzTooltipTitle="Delete">
+                            <nz-icon nzType="delete" nzTheme="outline" />
+                        </span>
+                    </button>
+
+                         <label style="border: none; float: right; width: 30px;" nz-checkbox
+                                            (change)="toggleSelection(entry.Wednesday, 'Wednesday')"></label>
+
+
+
+
+                    <br>
+                    <br>
+                    ជំនាន់ : <nz-tag nzColor="purple" [nzBordered]="true">{{ entry.Wednesday.generation
+                        }}</nz-tag>
+
+                    ឆ្នាំទី : <nz-tag nzColor="purple" [nzBordered]="true">{{ entry.Wednesday.batch }}</nz-tag>
+                    <br>
+                    ជំនាញ : {{ entry.Wednesday.major_name }}<br>
+                    {{ entry.Wednesday.subject_name }}<br>
+                    {{ findTeacher(entry.Wednesday.teacher_id) }}<br>
+                    <div *ngIf="findRoom(entry.Wednesday.room_id) as room">
+                        <p nz-button nz-popover nzPopoverTitle=" Room:{{room.room_number}}" nzColor="purple"
+                            [nzPopoverContent]="contentTemplate"><nz-tag nzColor="purple"
+                                [nzBordered]="true">{{room.room_number }}</nz-tag>
+                        </p>
+
+
+                        <ng-template #contentTemplate>
+                            <div>
+                                <p>id: {{ room.id }}</p>
+                                <p>Type: {{ room.room_type }}</p>
+                                <p>Floor: {{ room.floor }}</p>
+                                <p>capacity: {{ room.capacity }}</p>
+                            </div>
+                        </ng-template>
+
+                    </div>
+                </td>
+                <ng-template #freeWednesday >
+                    <td *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')" data-label="Wednesday">
+                      
+
+                                <button nz-button (click)="showModal(entry.time, 'Wednesday') ; showModalfalse()">Add</button>
+                    </td>
+                </ng-template>
+
+
+                <td *ngIf="entry.Thursday; else freeThursday"  data-label="Thursday">
+
+
+<button style="border: none; float: right;" (click)="showModal(entry.time, 'Thursday') ; showModalfalse()">
+    <span nz-tooltip nzTooltipTitle="Add">
+        <nz-icon nzType="plus" nzTheme="outline" />
+    </span>
+</button>
+
+
+                    <button style="border: none; float: right;" (click)="deleteTimetable(entry.Thursday.id) ">
+                        <span nz-tooltip nzTooltipTitle="Delete">
+                            <nz-icon nzType="delete" nzTheme="outline" />
+                        </span>
+                    </button>
+
+                                <label style="border: none; float: right; width: 30px;" nz-checkbox
+                                    (change)="toggleSelection(entry.Thursday, 'Thursday')"></label>
+
+
+
+                    <br>
+                    <br>
+
+
+                    ជំនាន់ : <nz-tag nzColor="purple" [nzBordered]="true">{{ entry.Thursday.generation
+                        }}</nz-tag>
+
+                    ឆ្នាំទី : <nz-tag nzColor="purple" [nzBordered]="true">{{ entry.Thursday.batch }}</nz-tag>
+                    <br>
+                    ជំនាញ : {{ entry.Thursday.major_name }}<br>
+                    {{ entry.Thursday.subject_name }}<br>
+                    {{ findTeacher(entry.Thursday.teacher_id) }}<br>
+                    <div *ngIf="findRoom(entry.Thursday.room_id) as room">
+                        <p nz-button nz-popover nzPopoverTitle=" Room:{{room.room_number}}" nzColor="purple"
+                            [nzPopoverContent]="contentTemplate"><nz-tag nzColor="purple"
+                                [nzBordered]="true">{{room.room_number }}</nz-tag>
+                        </p>
+                        <ng-template #contentTemplate>
+                            <div>
+                                <p>id: {{ room.id }}</p>
+                                <p>Type: {{ room.room_type }}</p>
+                                <p>Floor: {{ room.floor }}</p>
+                                <p>capacity: {{ room.capacity }}</p>
+                            </div>
+                        </ng-template>
+
+                    </div>
+                </td>
+                <ng-template #freeThursday   >
+                    <td *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')" data-label="Thursday">
+                            <button nz-button (click)="showModal(entry.time, 'Thursday')">Add</button>
+                    </td>
+                </ng-template>
+
+                <td *ngIf="entry.Friday ; else freeFriday"   data-label="Friday">
+
+
+                    <button style="border: none; float: right;" (click)="showModal(entry.time, 'Friday') ; showModalfalse()">
+                        <span nz-tooltip nzTooltipTitle="Add">
+                            <nz-icon nzType="plus" nzTheme="outline" />
+                        </span>
+                    </button>
+
+                    <button style="border: none; float: right;" (click)="deleteTimetable(entry.Friday.id) ">
+                        <span nz-tooltip nzTooltipTitle="Delete">
+                            <nz-icon nzType="delete" nzTheme="outline" />
+                        </span>
+                    </button>
+                            <label style="border: none; float: right; width: 30px;" nz-checkbox
+                                (change)="toggleSelection(entry.Friday, 'Friday')"></label>
+                    <br>
+                    <br>
+                    ជំនាន់ : <nz-tag nzColor="purple" [nzBordered]="true">{{ entry.Friday.generation }}</nz-tag>
+                    ឆ្នាំទី : <nz-tag nzColor="purple" [nzBordered]="true">{{ entry.Friday.batch }}</nz-tag>
+                    <br>
+                    ជំនាញ : {{ entry.Friday.major_name }}<br>
+
+                    {{ entry.Friday.subject_name }}<br>
+                    {{ findTeacher(entry.Friday.teacher_id) }}<br>
+                    <div *ngIf="findRoom(entry.Friday.room_id) as room">
+                        <p nz-button nz-popover nzPopoverTitle=" Room:{{room.room_number}}" nzColor="purple"
+                            [nzPopoverContent]="contentTemplate"><nz-tag nzColor="purple"
+                                [nzBordered]="true">{{room.room_number }}</nz-tag>
+                        </p>
+
+
+                        <ng-template #contentTemplate>
+                            <div>
+                                <p>id: {{ room.id }}</p>
+                                <p>Type: {{ room.room_type }}</p>
+                                <p>Floor: {{ room.floor }}</p>
+                                <p>capacity: {{ room.capacity }}</p>
+                            </div>
+                        </ng-template>
+
+                    </div>
+                </td>
+                <ng-template #freeFriday  >
+                    <td *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')" data-label="Friday">
+                                            <button nz-button (click)="showModal(entry.time, 'Friday') ; showModalfalse()">Add</button>
+
+                    </td>
+                </ng-template>
+
+
+                <td *ngIf="entry.Saturday ; else freeSaturday"  data-label="Saturday">
+
+
+
+    <button style="border: none; float: right;" (click)="showModal(entry.time, 'Saturday') ; showModalfalse()">
+        <span nz-tooltip nzTooltipTitle="Add">
+            <nz-icon nzType="plus" nzTheme="outline" />
+        </span>
+    </button>
+
+                    <button style="border: none; float: right;" (click)="deleteTimetable(entry.Saturday.id) ">
+                        <span nz-tooltip nzTooltipTitle="Delete">
+                            <nz-icon nzType="delete" nzTheme="outline" />
+                        </span>
+                    </button>
+
+                            <label style="border: none; float: right; width: 30px;" nz-checkbox
+                                (change)="toggleSelection(entry.Saturday, 'Saturday')"></label>
+
+
+
+                    <br>
+                    <br>
+                    ជំនាន់ : <nz-tag nzColor="purple" [nzBordered]="true">{{ entry.Saturday.generation
+                        }}</nz-tag>
+
+                    ឆ្នាំទី : <nz-tag nzColor="purple" [nzBordered]="true">{{ entry.Saturday.batch }}</nz-tag>
+                    <br>
+                    ជំនាញ : {{ entry.Saturday.major_name }}<br>
+
+                    {{ entry.Saturday.subject_name }}<br>
+                    {{ findTeacher(entry.Saturday.teacher_id) }}<br>
+                    <div *ngIf="findRoom(entry.Saturday.room_id) as room">
+                        <p nz-button nz-popover nzPopoverTitle=" Room:{{room.room_number}}" nzColor="purple"
+                            [nzPopoverContent]="contentTemplate"><nz-tag nzColor="purple"
+                                [nzBordered]="true">{{room.room_number }}</nz-tag>
+                        </p>
+
+
+                        <ng-template #contentTemplate>
+                            <div>
+                                <p>id: {{ room.id }}</p>
+                                <p>Type: {{ room.room_type }}</p>
+                                <p>Floor: {{ room.floor }}</p>
+                                <p>capacity: {{ room.capacity }}</p>
+                            </div>
+                        </ng-template>
+
+                    </div>
+                </td>
+                <ng-template #freeSaturday >
+                    <td *ngIf="filterStudyShift === '' || filterStudyShift.includes('Saturday-Sunday')" data-label="Saturday">
+
+
+                                                            <button nz-button (click)="showModal(entry.time, 'Saturday') ; showModalfalse()">Add</button>
+
+
+
+                    </td>
+                </ng-template>
+
+
+                <td *ngIf="entry.Sunday ; else freeSunday"  data-label="Sunday">
+
+                    <button style="border: none; float: right;"(click)="showModal(entry.time, 'Sunday') ; showModalfalse()">
+                        <span nz-tooltip nzTooltipTitle="Add">
+                            <nz-icon nzType="plus" nzTheme="outline" />
+                        </span>
+                    </button>
+
+                    <button style="border: none; float: right;" (click)="deleteTimetable(entry.Sunday.id) ">
+                        <span nz-tooltip nzTooltipTitle="Delete">
+                            <nz-icon nzType="delete" nzTheme="outline" />
+                        </span>
+                    </button>
+
+                            <label style="border: none; float: right; width: 30px;" nz-checkbox
+                                (change)="toggleSelection(entry.Sunday, 'Sunday')"></label>
+
+
+
+
+                    <br>
+                    <br>
+                    ជំនាន់ : <nz-tag nzColor="purple" [nzBordered]="true">{{ entry.Sunday.generation }}</nz-tag>
+
+                    ឆ្នាំទី : <nz-tag nzColor="purple" [nzBordered]="true">{{ entry.Sunday.batch }}</nz-tag>
+                    <br>
+                    ជំនាញ : {{ entry.Sunday.major_name }}<br>
+
+                    {{ entry.Sunday.subject_name }}<br>
+                    {{ findTeacher(entry.Sunday.teacher_id) }}<br>
+                    <div *ngIf="findRoom(entry.Sunday.room_id) as room">
+                        <p nz-button nz-popover nzPopoverTitle=" Room:{{room.room_number}}" nzColor="purple"
+                            [nzPopoverContent]="contentTemplate"><nz-tag nzColor="purple"
+                                [nzBordered]="true">{{room.room_number }}</nz-tag>
+                        </p>
+                        <ng-template #contentTemplate>
+                            <div>
+                                <p>id: {{ room.id }}</p>
+                                <p>Type: {{ room.room_type }}</p>
+                                <p>Floor: {{ room.floor }}</p>
+                                <p>capacity: {{ room.capacity }}</p>
+                            </div>
+                        </ng-template>
+                    </div>
+                </td>
+                <ng-template #freeSunday  >
+                    <td *ngIf="filterStudyShift === '' || filterStudyShift.includes('Saturday-Sunday')" data-label="Sunday"> 
+                                                <button nz-button (click)="showModal(entry.time, 'Sunday') ; showModalfalse()">Add</button>
+
+              
+                    </td>
+                </ng-template>
+
+
+            </tr>
+        </tbody>
+
+
+
+
+    </table>
+
+
+
+
+      
+           
+
+
+ 
+ 
+
+<!-- 
+[nzTitle]="undefined" Hide the header/title -->
+<!-- [nzFooter]="null"  Hide the footer -->
+
+<nz-modal [(nzVisible)]="isVisible" 
+[nzTitle]="'បង្កើត កាវិភាគ'" 
+[nzTitle]="undefined"
+(nzOnCancel)="handleCancel()"
+(nzOnOk)="handleOk()"
+nzWidth="80%"
+[nzFooter]="null"
+[nzContent]="modalContent"
+[nzBodyStyle]="{ padding: '0px' }"
+nzClassName="custom-modal"
+>
+    <ng-template #modalContent>
+        <app-create-timetable  
+         [timetableForm]="timetableForm"
+          [showPart]="showPart" 
+          ></app-create-timetable>
+    </ng-template>
+</nz-modal>
+
+
+<style>
+
+::ng-deep .custom-modal .ant-modal-content {
+  border-radius: 15px;
+  padding: 50px 50px 20px 20px;
+}
+</style>
+
+
+    <nz-modal [(nzVisible)]="isVisibleModadelet"
+    nzTitle="The first Modal" 
+    [nzTitle]="undefined"
+
+    (nzOnCancel)="handleCancelModadelet()" 
+    (nzOnOk)="handleOkModadelet()"
+    [nzFooter]="null"
+    nzClassName="custom-modal"
+    nzWidth="80%"
+
+
+
+    >
+        <ng-container *nzModalContent>
+        <!-- Input fields to capture dynamic values -->
+<div class="container mt-4">
+    <form (ngSubmit)="deleteTimetabllist()">
+
+        <div class="row g-3 mb-3 align-items-end">
+
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <label class="form-label">Year</label> <nz-select class="w-100" nzShowSearch nzAllowClear
+                    nzPlaceHolder="Select Year" name="filterYear" [(ngModel)]="year">
+                    <nz-option *ngFor="let year of options.years" [nzLabel]="year.years" [nzValue]="year.years">
+                        {{ year.years }}
+                    </nz-option>
+                </nz-select>
+            </div>
+
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <label class="form-label">Semester</label> <nz-select class="w-100" nzShowSearch nzAllowClear
+                    nzPlaceHolder="Select Semester" name="filterSemester" [(ngModel)]="semester">
+                    <nz-option *ngFor="let semester of options.semester" [nzLabel]="semester.semester"
+                        [nzValue]="semester.semester">
+                        {{ semester.semester }}
+                    </nz-option>
+                </nz-select>
+            </div>
+
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <label class="form-label">Major</label> <nz-select class="w-100" nzShowSearch nzAllowClear
+                    nzPlaceHolder="Select Major" name="filterMajorName" [(ngModel)]="major_id1">
+                    <nz-option *ngFor="let major of options.major" [nzLabel]="major.major_name"
+                        [nzValue]="major.major_id">
+                        {{ major.major_name }} </nz-option>
+                </nz-select>
+            </div>
+
+
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <label class="form-label">Group Student</label> <nz-select class="w-100" nzShowSearch nzAllowClear
+                    nzPlaceHolder="Select Group" name="filterGroupStudent" [(ngModel)]="group_student">
+                    <nz-option *ngFor="let group of options.group_student" [nzLabel]="group.group_student"
+                        [nzValue]="group.group_student"> {{ group.group_student }}
+                    </nz-option>
+                </nz-select>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-12 d-flex justify-content-end"> <button nz-button nzType="primary" nzDanger
+                    type="submit">លុប</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+        <!-- Confirmation Modal (Ant Design Modal) -->
+ ​​​            <nz-modal
+            nzClassName="custom-modal"
+         [(nzVisible)]="isModalVisible" [nzTitle]="'តើអ្នកប្រាកដថាចង់លុបវាទេ?'"
+            (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+            <p><b style="color: red;"> ចុច Yes បើសិនជាចង់លុប</b></p>
+        </nz-modal>
+
+
+        </ng-container>
+
+
+    </nz-modal>
+
+
+</div>
+
+
+
+    <!-- <div style="display: flex; font-family: Battambang;">
+        <div class="footer" style="text-align: center; margin-top: 20px; width: 50%;">
+            <p style="font-family: Moul;">
+                <br><br><br><br><br>
+                <span style="font-family: Battambang;">
+                    បានឃើញ និងឯកភាព
+                </span>
+                <br>
+                ជ.សាកលវិទ្យាធិការ
+                <br>
+                សាកលវិទ្យាធិការរង
+                <br>
+            </p>
+        </div>
+        <div class="footer" style="text-align: center; margin-top: 20px; width: 50%;">
+            <p>ថ្ងៃទី<span contenteditable="true" style="border-bottom: 1px rgb(0, 0, 0);">.......</span> ខែ<span
+                    contenteditable="true" style="border-bottom: 1px rgb(0, 0, 0);">.......</span> ឆ្នាំ<span
+                    contenteditable="true" style="border-bottom: 1px rgb(0, 0, 0);">.......</span></p>
+            <p>បន្ទាយមានជ័យ ថ្ងៃទី<span contenteditable="true" style="border-bottom: 1px rgb(0, 0, 0);">.......</span>
+                ខែ<span contenteditable="true" style="border-bottom: 1px rgb(0, 0, 0);">.......</span> ឆ្នាំ<span
+                    contenteditable="true" style="border-bottom: 1px rgb(0, 0, 0);">.......</span></p>
+            <p>ប្រធានការិយាល័យសិក្សា</p>
+        </div>
+    </div> -->
+
+
+
+
+<button class="shadow-button" style="border-radius: 100px 100px 0px 0px;" *ngIf="selectedEntries.length === 1" nz-button
+    (click)=" showModal3()" nz-tooltip nzTooltipTitle=" ដូរទៅបន្ទប់ដែលថ្មីមិនទានមានអ្នកណារៀន 🆕   មិនទាន់ហើយ "
+    [nzTooltipColor]="colors" nzType="default">
+    ដូរបន្ទប់ <nz-icon nzType="retweet" nzTheme="outline" style="color: chocolate;" />
+</button>
+
+
+
+<nz-modal [(nzVisible)]="isVisible3" nzTitle="ជ្រើសរើសបន្ទប់" (nzOnCancel)=" handleCancel3()" (nzOnOk)="handleOk3()">
+    <ng-container *nzModalContent>
+        <p></p>
+        
+        {{selectedRoomId}}
+        {{selectedEntries[0]?.id}}
+   
+        <nz-radio-group [(ngModel)]="selectedRoomId">
+            <nz-table #basicTable [nzData]="rooms" [nzBordered]="true" [nzSize]="'middle'">
+                <thead>
+                    <tr>
+                        <th>Select</th>
+                        <th>ID</th>
+                        <th>Room Number</th>
+                        <th>Room Type</th>
+                        <th>Capacity</th>
+                        <th>Floor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let room of rooms">
+                        <td>
+                            <label nz-radio [nzValue]="room.id"></label>
+                        </td>
+                        <td>{{ room.id }}</td>
+                        <td>{{ room.room_number }}</td>
+                        <td>{{ room.room_type }}</td>
+                        <td>{{ room.capacity }}</td>
+                        <td>{{ room.floor }}</td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </nz-radio-group>
+
+        <style>
+            [nz-radio] {
+                display: block;
+                height: 32px;
+                line-height: 32px;
+            }
+
+      
+        </style>
+
+    </ng-container>
+</nz-modal>
+
+
+

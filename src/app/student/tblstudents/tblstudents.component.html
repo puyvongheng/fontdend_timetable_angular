@@ -1,0 +1,208 @@
+
+<div class="container mt-4  absolute" style="background-color: white; border-radius: 10px; padding: 20px;
+ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+
+<button nz-button [nzType]="'primary'" nzShape="round" (click)="showModal()">
+    <span>បន្ថែម</span>
+</button>
+
+
+
+<p-table [value]="students" [paginator]="true" [rows]="5" [tableStyle]="{ 'min-width': '80rem' }" [size]="'small'">
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="id">ID <p-sortIcon field="id" /></th>
+            <th pSortableColumn="username">Username <p-sortIcon field="username" /></th>
+            <th pSortableColumn="student_name">Name <p-sortIcon field="student_name" /></th>
+            <th pSortableColumn="gender">Gender <p-sortIcon field="gender" /></th>
+            <th pSortableColumn="email">Email <p-sortIcon field="email" /></th>
+            <th pSortableColumn="phone_number">Phone Number <p-sortIcon field="phone_number" /></th>
+            <th pSortableColumn="major_name">Major <p-sortIcon field="major_name" /></th>
+            <th pSortableColumn="generation">Generation <p-sortIcon field="generation" /></th>
+            <th pSortableColumn="batch">Batch <p-sortIcon field="batch" /></th>
+            <th pSortableColumn="group_student">Group <p-sortIcon field="group_student" /></th>
+            <th pSortableColumn="shift_name">Shift <p-sortIcon field="shift_name" /></th>
+            <th pSortableColumn="enrollment_status">Enrollment Status <p-sortIcon field="enrollment_status" /></th>
+            <th>Action</th>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-student>
+        <tr>
+            <td>{{ student.id }}</td>
+            <td>{{ student.username }}</td>
+            <td>{{ student.student_name }}</td>
+            <td>{{ student.gender || 'N/A' }}</td>
+            <td>{{ student.email || 'N/A' }}</td>
+            <td>{{ student.phone_number || 'N/A' }}</td>
+            <td>{{ student.major_name }}</td>
+            <td>{{ student.generation }}</td>
+            <td>{{ student.batch }}</td>
+            <td>{{ student.group_student }}</td>
+            <td>{{ student.shift_name }}</td>
+            <td>{{ student.enrollment_status || 'N/A' }}</td>
+            <td class="d-flex justify-content-center align-items-center">
+                <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true"
+                    (click)="showModal(student)" />
+                <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" />
+            </td>
+        </tr>
+    </ng-template>
+    </p-table>
+
+
+
+</div>
+
+
+
+
+<style>
+    ::ng-deep .custom-modal .ant-modal-content {
+        border-radius: 20px;
+        padding: 50px 50px 20px 20px;
+
+    }
+</style>
+
+
+
+<!-- Modal to Add New Student -->
+<nz-modal nzClassName="custom-modal" [(nzVisible)]="isVisible" nzWidth="80%"
+    [nzTitle]="isEditing ? 'Update Student' : 'Add New Student'" [nzFooter]="null" (nzOnCancel)="handleCancel()"
+    (nzOnOk)="handleOk()">
+    <ng-container *nzModalContent>
+        <form (ngSubmit)="onSubmit()" #studentForm="ngForm">
+
+            <nz-row nzGutter="16">
+
+                <!-- Left Column -->
+                <nz-col nzSpan="12">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" class="form-control"
+                            [(ngModel)]="formModel.username" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" class="form-control" [(ngModel)]="formModel.name"
+                            required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" class="form-control"
+                            [(ngModel)]="formModel.password" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="major_id">Major</label>
+                        <input type="number" id="major_id" name="major_id" class="form-control"
+                            [(ngModel)]="formModel.major_id" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="shift_name">Shift</label>
+                        <nz-select id="shift_name" name="shift_name" [(ngModel)]="formModel.shift_name"
+                            class="form-control">
+                            <nz-option value="Monday-Friday Morning" nzLabel="Monday-Friday Morning"></nz-option>
+                            <nz-option value="Monday-Friday Afternoon" nzLabel="Monday-Friday Afternoon"></nz-option>
+                            <nz-option value="Monday-Friday Evening" nzLabel="Monday-Friday Evening"></nz-option>
+                            <nz-option value="Saturday-Sunday" nzLabel="Saturday-Sunday"></nz-option>
+                        </nz-select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="generation">Generation</label>
+                        <input type="number" id="generation" name="generation" class="form-control"
+                            [(ngModel)]="formModel.generation" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="batch">Batch</label>
+                        <input type="number" id="batch" name="batch" class="form-control"
+                            [(ngModel)]="formModel.batch" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="group_student">Group</label>
+                        <input type="number" id="group_student" name="group_student" class="form-control"
+                            [(ngModel)]="formModel.group_student" />
+                    </div>
+                </nz-col>
+
+                <!-- Right Column -->
+                <nz-col nzSpan="12">
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <input type="text" id="gender" name="gender" class="form-control"
+                            [(ngModel)]="formModel.gender" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone_number">Phone Number</label>
+                        <input type="text" id="phone_number" name="phone_number" class="form-control"
+                            [(ngModel)]="formModel.phone_number" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" class="form-control"
+                            [(ngModel)]="formModel.email" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nationality">Nationality</label>
+                        <input type="text" id="nationality" name="nationality" class="form-control"
+                            [(ngModel)]="formModel.nationality" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="enrollment_status">Enrollment Status</label>
+                        <input type="text" id="enrollment_status" name="enrollment_status" class="form-control"
+                            [(ngModel)]="formModel.enrollment_status" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="profile_photo">Profile Photo</label>
+                        <input type="file" id="profile_photo" name="profile_photo" class="form-control" (change)="onFileChange($event)" />
+                    </div>
+                    
+        <!-- Image preview using ng-zorro nz-image -->
+        <div class="profile-preview-container">
+            <img nz-image
+                [nzSrc]="formModel.profile_photo ? formModel.profile_photo : 'https://static.vecteezy.com/system/resources/previews/001/840/612/non_2x/picture-profile-icon-male-icon-human-or-people-sign-and-symbol-free-vector.jpg'"
+                width="200px" height="200px" alt="Profile Preview" class="profile-img" />
+        </div>
+          
+  
+        <style>
+            .profile-preview-container {
+                max-height: 220px;
+                overflow-y: auto; /* Adds vertical scroll if needed */
+                padding: 10px;
+              }
+              
+              .profile-img {
+                border: 4px solid #1890ff; /* NgZorro primary blue */
+                border-radius: 50%; /* Makes it round */
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Soft shadow */
+                object-fit: cover;
+                display: block;
+                margin: auto;
+              }
+              
+        </style>
+        </nz-col>
+
+            </nz-row>
+
+            <button nz-button nzType="primary" [disabled]="!studentForm.valid" class="mt-3">
+                {{ isEditing ? 'Update' : 'Submit' }}
+            </button>
+
+        </form>
+    </ng-container>
+</nz-modal>
+  

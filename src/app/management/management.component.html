@@ -1,0 +1,35 @@
+<div *ngIf="alertMessage"
+    [ngClass]="{'alert alert-success': alertType === 'success', 'alert alert-danger': alertType === 'danger'}">
+    {{ alertMessage }}
+</div>
+
+<h1 class="text-center my-4">Faculty Management</h1>
+
+<div class="table-wrapper">
+    <table class="table table-bordered table-striped">
+        <thead class="table-primary">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let faculty of faculties">
+                <td>{{ faculty.id }}</td>
+                <td>{{ faculty.name }}</td>
+                <td>
+                    <button class="btn btn-warning btn-sm" (click)="editFaculty(faculty)">Edit</button>
+                    <button class="btn btn-danger btn-sm" (click)="deleteFaculty(faculty.id)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<h2 class="mt-4">Add Faculty</h2>
+<form (ngSubmit)="addFaculty()" #addFacultyForm="ngForm">
+    <input type="text" [(ngModel)]="newFacultyName" name="facultyName" class="form-control"
+        placeholder="Enter faculty name" required minlength="3" />
+    <button type="submit" class="btn btn-primary" [disabled]="!addFacultyForm.valid">Add Faculty</button>
+</form>

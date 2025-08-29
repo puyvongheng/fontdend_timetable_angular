@@ -1,0 +1,546 @@
+<div class="container"> <!-- Wrap everything in a container for responsiveness -->
+    <form #form="ngForm" (ngSubmit)="onSubmit()" class="row g-3"> <!-- Use Bootstrap's grid and form classes -->
+
+        <!-- Year, Semester, Batch, Generation -->
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <label class="form-label" for="years">ឆ្នាំសិក្សារ
+                <span *ngIf="!timetableForm.years" class="text-danger">*</span>
+            </label>
+            <nz-input-number class="w-100" name="years" [(ngModel)]="timetableForm.years" nzMin="2000" nzMax="3000"
+                (ngModelChange)="checkForConflicts()" required></nz-input-number>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <label class="form-label" for="semester">ឆមាស
+                <span *ngIf="!timetableForm.semester" class="text-danger">*</span>
+            </label>
+
+            <nz-input-number class="w-100" name="semester" [(ngModel)]="timetableForm.semester" nzMin="1" nzMax="2"
+                [required]="+timetableForm.semester >= 1" (ngModelChange)="checkForConflicts()"
+                required></nz-input-number>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <label class="form-label" for="batch">ឆ្នាំទី
+                <span *ngIf="!timetableForm.batch" class="text-danger">*</span>
+
+            </label>
+            <nz-input-number class="w-100" nzPlaceHolder="batch" name="batch" (ngModelChange)="checkForConflicts() ;
+
+         
+            "
+                [(ngModel)]="timetableForm.batch" nzMin="1" nzMax="4" required></nz-input-number>
+
+
+
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <label class="form-label" for="generation">ជំនាន់​         (ឆ្នាំទី {{generateBatch(timetableForm.generation)}}
+            ជំនាន់ {{generateGeneration(timetableForm.batch)}})
+
+                <span *ngIf="!timetableForm.generation" class="text-danger">*</span>
+            </label>
+            <nz-input-number class="w-100" name="generation" [(ngModel)]="timetableForm.generation"
+                (ngModelChange)="checkForConflicts()" nzMin="13" nzMax="100" required></nz-input-number>
+        </div>
+
+  
+
+        <!-- Group -->
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <label class="form-label" for="group">ក្រុម
+                <span *ngIf="!timetableForm.group_student" class="text-danger">*</span>
+            </label>
+            <nz-input-number class="w-100" nzPlaceHolder="group" name="group_student"
+                [(ngModel)]="timetableForm.group_student" (ngModelChange)="checkForConflicts()" nzMin="1" nzMax="100"
+                required />
+        </div>
+
+
+        <!-- Major -->
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <label class="form-label" for="majorSelect">ជំនាញ id:
+                <span *ngIf="!timetableForm.major_id" class="text-danger">*</span>
+            </label>
+
+
+            <nz-select  class="w-100"
+             [(ngModel)]="timetableForm.major_id"
+             name="majorSelect"  (ngModelChange)="checkForConflicts()"
+              nzAllowClear
+              nzShowSearch
+               nzPlaceHolder="Choose" [nzOptions]="listOfGroupOption"required>
+
+            </nz-select>
+
+
+
+            <!-- Conflict Display (Major) - Improved Styling -->
+            <div *ngIf="conflicts.length > 0" class="mt-2">
+                <ng-container *ngFor="let conflict of conflicts">
+                    <div *ngIf="conflict.total" class="text-success"> <!-- Use text-success class -->
+                        {{ conflict.total }}
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+
+        <!-- Room -->
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <label class="form-label" for="room">room
+                <span class="text-danger" *ngIf="!timetableForm.room_id">*</span>
+            </label>
+            <nz-select class="w-100" nzShowSearch nzAllowClear nzPlaceHolder="Select room" name="roomSelect"
+                [(ngModel)]="timetableForm.room_id" (ngModelChange)="checkForConflicts()" required>
+                <nz-option *ngFor="let room of rooms" [nzLabel]="room.room_number" [nzValue]="room.id">
+                </nz-option>
+            </nz-select>
+            <!-- Conflict Display (Room) - Improved Styling -->
+            <div *ngIf="conflicts.length > 0" class="mt-2">
+                <ng-container *ngFor="let conflict of conflicts">
+                    <div *ngIf="conflict.room" class="text-danger"> <!-- Use text-danger class -->
+
+                        <p
+                            style="border: none; border-radius: 20px; background: #ff00004a;  width: fit-content; padding-left: 10px; padding-right: 10px; ">
+                        {{ conflict.room }}
+                        
+                        </p>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+
+        <!-- Study Sessions (Shift, Day, Time) -->
+         <style>
+            .disabled-div {
+  opacity: 0.7; /* Make it look disabled  *ngIf="showPart"*/
+  color: rgb(153, 255, 0);
+   /*  pointer-events: none; Prevent clicks */
+
+}
+         </style>
+        <div class="col-12 col-md-6" >
+            <div   [ngClass]="{ 'disabled-div': !showPart }">
+                <label class="form-label">time
+                    <span class="text-danger" *ngIf="!sessionTime">*</span>
+                    {{studySessionsId}}
+                </label>
+
+                <nz-select class="w-100 mb-2" nzShowSearch nzAllowClear nzPlaceHolder="ជ្រើសរើស វេនសិក្សា"
+                    name="shiftName" [(ngModel)]="shiftName" (ngModelChange)="updateSelectedSession()">
+                    <nz-option *ngFor="let shift of getUniqueShiftNames()" [nzLabel]="shift" [nzValue]="shift">
+                        {{ shift }}
+                    </nz-option>
+                </nz-select>
+
+
+                <nz-select class="w-100 mb-2" nzShowSearch nzAllowClear nzPlaceHolder="ជ្រើសរើស ថ្ងែ" name="sessionDay"
+                    [(ngModel)]="sessionDay" (ngModelChange)="updateSelectedSession()">
+                    <nz-option *ngFor="let day of getUniqueDaysForShift()" [nzLabel]="day" [nzValue]="day">
+                        {{ day }}
+                    </nz-option>
+                </nz-select>
+
+                <nz-select class="w-100 mb-2" nzShowSearch nzAllowClear nzPlaceHolder="ជ្រើសរើស ម៉ោងសិក្សា"
+                    name="sessionTime" [(ngModel)]="sessionTime"
+                    (ngModelChange)="updateSelectedSession(); checkForConflicts()" required>
+                    <nz-option *ngFor="let time of getUniqueTimes()" [nzLabel]="time" [nzValue]="time">
+                        {{ time }}
+                    </nz-option>
+                </nz-select>
+
+
+            </div>
+
+
+
+            <!-- Conflict Display (Session) - Improved Styling and Logic -->
+
+            <div *ngIf="conflicts.length > 0" class="mt-2">
+                <ng-container *ngFor="let conflict of conflicts">
+                    <div *ngIf="conflict.messagesessions" class="text-danger">
+                        <p style="border: none; border-radius: 20px; background: #ff00004a;  width: fit-content; padding-left: 10px; padding-right: 10px; ">{{ conflict.messagesessions }}</p>
+                    </div>
+
+                    <div *ngIf="conflict.teacher_time" class="text-danger">
+                        <p style="border: none; border-radius: 20px; background: #ff00004a;  width: fit-content; padding-left: 10px; padding-right: 10px; ">{{ conflict.teacher_time }}</p>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+
+
+        <!-- Subject and Teacher -->
+        <div class="col-12 col-md-6">
+            <!--
+            <label class="form-label" for="មុខវិជ្ជា">មុខវិជ្ជា
+                <span class="text-danger" *ngIf="!timetableForm.subject_id">*</span>
+            </label>
+-->
+    
+
+
+
+
+ 
+
+   
+
+
+
+
+
+
+
+
+
+   
+
+    <label class="form-label" for="subject1">មុខវិជ្ជា
+                        <span class="text-danger" *ngIf="!timetableForm.subject_id">*</span>
+
+                        <button type="button" (click)="  load_teacher_subjects() " class="ms-1"
+                            style="border: none;  border-radius: 20px;background:#007bff;  color: aliceblue;"> បង្អាញ
+                            load_teacher_subjects
+                        </button>
+
+            </label>
+    <nz-select class="w-100 mb-2" [(ngModel)]="timetableForm.subject_id" nzShowSearch name="subject1"
+         (ngModelChange)="onSubjectSelect()" nzAllowClear
+        nzPlaceHolder="ជ្រើសរើស មុខវិជ្ជា:" [nzOptions]="subjectsGroup1" required>
+    </nz-select>
+
+
+  
+
+<!-- Subject Dropdown
+<label for="subject">Subject: {{timetableForm.subject_id}}</label>
+<nz-select 
+nzShowSearch 
+nzAllowClear 
+class="w-100 mb-2" 
+name="subject" [(ngModel)]="timetableForm.subject_id"
+    (ngModelChange)="onSubjectSelect()" nzPlaceHolder="ជ្រើសរើសមុខវិជ្ជា">
+    <nz-option *ngFor="let s of subjects1" [nzValue]="s.subject_id" [nzLabel]="s.subject_name">
+    </nz-option>
+</nz-select>
+-->
+<!-- Teacher Dropdown -->
+<label for="teacher">Teacher:{{timetableForm.teacher_id}}</label>
+<nz-select nzShowSearch nzAllowClear class="w-100 mb-2" 
+ name="teacher"
+   [(ngModel)]="timetableForm.teacher_id"
+    (ngModelChange)="onTeacherSelect()"
+    nzPlaceHolder="ជ្រើសរើសគ្រូបង្រៀន" required>
+    <nz-option *ngFor="let t of teacherSubjects1" [nzValue]="t.teacher_id" [nzLabel]="t.teacher_name">
+    </nz-option>
+</nz-select>
+
+
+
+
+<!--
+
+<pre>{{ teacherSubjects1 | json }}</pre>
+<br>
+-->
+
+
+
+
+    
+
+
+<!--
+                <nz-select class="w-100 mb-2"
+                 [(ngModel)]="timetableForm.subject_id"
+                  nzShowSearch
+                  name="subjectSelect"
+                    (ngModelChange)="onSubjectChange(); onTeacherChange(); checkForConflicts()" 
+                 nzAllowClear nzPlaceHolder="ជ្រើសរើស មុខវិជ្ជា:"
+                [nzOptions]="subjectsGroup">
+                </nz-select> 
+            <label class="form-label" for="teacherSelect">គ្រូ</label> 
+            <nz-select class="w-100" nzShowSearch nzAllowClear nzPlaceHolder="ជ្រើសរើស គ្រូរ" name="teacherSelect"
+                [(ngModel)]="timetableForm.teacher_id" (ngModelChange)="onTeacherChange(); checkForConflicts() "
+                required>
+                <nz-option *ngFor="let teacher of filteredTeachers" 
+                    [nzLabel]="teacher.name + ' (' + teacher.totalTimetable + '  / ' + teacher.number_sessions +  ' )'"
+
+                    [nzDisabled]="(teacher?.number_sessions ?? 0) <= 0" [nzValue]="teacher.id">
+                </nz-option>
+            </nz-select>
+-->
+
+
+<!-- Added label for teacher  tess-->
+
+
+
+
+
+            <!-- Conflict Display (Teacher, Room/Subject) - Improved Styling -->
+            <div *ngIf="conflicts.length > 0" class="mt-2">
+                <ng-container *ngFor="let conflict of conflicts">
+                    <div *ngIf="conflict.teacher" class="text-danger">
+                        <p style="border: none; border-radius: 20px; background: #ff00004a;  width: fit-content; padding-left: 10px; padding-right: 10px; ">
+                        {{ conflict.teacher }}
+
+                        </p>
+                    </div>
+                    <div *ngIf="conflict.room_subject" class="text-warning">
+                                <p
+                                    style="border: none; border-radius: 20px; background: #e5ff004a;  width: fit-content; padding-left: 10px; padding-right: 10px; ">
+                                                        {{ conflict.room_subject }}
+
+                                </p>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+
+
+        <!-- Submit Button -->
+        <div class="col-12">
+            <button nz-button nzType="primary" nzShape="round" type="submit" class="w-100"
+                [disabled]="!form.valid">បង្កើត</button>
+        </div>
+    </form>
+
+    <!-- Loading Overlay -->
+    <div *ngIf="isLoading" class="loading-overlay">
+        <nz-spin nzSimple></nz-spin>
+        <p>កំពុងផ្ទុក សូមរង់ចាំ...</p>
+    </div>
+
+    <!-- Success Message -->
+    <div *ngIf="messages.includes('🎉 បានបង្កើតដោយជោគជ័យ! ✅')" class="alert">
+        <nz-result nzStatus="success" nzTitle="Successfully! "
+            nzSubTitle="កំណត់រចនាសម្ព័ន្ធម៉ាស៊ីនមេមានពេលវេលាចំណាយ1-5 នាទី សូមរង់ចាំ😊">
+        </nz-result>
+    </div>
+
+    <!-- Error Messages -->
+    <div *ngIf="messages.length > 0 && !messages.includes('🎉 បានបង្កើតដោយជោគជ័យ! ✅')" class="alert"
+        [ngClass]="alertClass">
+        <nz-result nzTitle="Submission Failed" nzStatus="error"
+            nzSubTitle="សូមពិនិត្យ និងកែសម្រួលព័ត៌មានខាងក្រោមមុនពេលផ្តល់មកវិញ 😊">
+            <div nz-result-content>
+                <ul>
+                    <li *ngFor="let msg of messages" [innerHTML]="msg"></li>
+                </ul>
+            </div>
+        </nz-result>
+    </div>
+
+
+    <!-- Random Option Button and Modal -->
+
+
+        <div style="display: flex; margin-top: 50px;">
+
+            <button type="button" (click)="showModalrendom() " class="ms-1"
+                style="border: none;  border-radius: 20px;background:#007bff;  color: aliceblue;"> 
+showModalrendom() F11     
+      </button>
+        <button type="button" (click)="startProcess()" class="ms-1"
+            style="border: none;  border-radius: 20px;background:#007bff;  color: aliceblue;">
+startProcess()  X 100      </button>
+
+<button type="button"  (click)="toggleProcess()" class="ms-1"
+    style="border: none;  border-radius: 20px;background:#007bff;  color: aliceblue;">
+toggleProcess() </button>
+
+            {{submissionCount}}
+        </div>
+
+   
+
+    <nz-modal nzWidth="60%" [(nzVisible)]="isVisiblerendom" nzTitle="ជ្រើសរើស កា rendom"
+        (nzOnCancel)="handleCancelrendom()" (nzOnOk)="handleOkrendom()">
+        <ng-container *nzModalContent>
+            <div class="d-flex align-items-center mb-3"> <!-- Use Bootstrap's flexbox utilities -->
+                <span class="me-2">Session</span> <!-- Add some margin to the right -->
+                <div class="d-flex flex-wrap"> <!-- Wrap tags for smaller screens -->
+                    <ng-container *ngFor="let entry of studySessionsrendom; let i = index">
+                        <nz-tag class="m-1">{{ entry.study_sessions_id }}</nz-tag>
+                    </ng-container>
+                </div>
+            </div>
+            <nz-collapse nzAccordion>
+                <!-- Loop over the panels -->
+                <nz-collapse-panel *ngFor="let panel of panels; trackBy: trackPanel" [nzHeader]="panel.name"
+                    [nzActive]="panel.active">
+
+                    <div *ngIf="panel.name === 'Session'">
+                        <div class="table-responsive"> <!-- Add table-responsive for horizontal scrolling -->
+                            <nz-table #basicTable [nzData]="studySessions_1">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <label nz-checkbox [(ngModel)]="selectAll"
+                                                (ngModelChange)="toggleAllSelection(); onStudySessionSelectionChange()">Select
+                                                All</label>
+                                        </th>
+                                        <th>Session ID</th>
+                                        <th>Shift Name</th>
+                                        <th>Session Day</th>
+                                        <th>start</th>
+                                        <th>end</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let session of studySessions_1">
+                                        <td>
+                                            <label nz-checkbox [(ngModel)]="session.selected"
+                                                (ngModelChange)="onStudySessionSelectionChange()">
+                                            </label>
+                                        </td>
+                                        <td>{{ session.id }}</td>
+                                        <td>{{ session.shift_name }}</td>
+                                        <td>{{ session.sessions_day }}</td>
+                                        <td>{{ session.session_time_start }}</td>
+                                        <td>{{ session.session_time_end }}</td>
+                                    </tr>
+                                </tbody>
+                            </nz-table>
+                        </div>
+                    </div>
+
+
+                    <div *ngIf="panel.name === 'Subjects'">
+                        <div class="table-responsive"> <!-- Add table-responsive for horizontal scrolling -->
+                            <nz-table>
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <label nz-checkbox [(ngModel)]="selectAll"
+                                                (ngModelChange)="toggleAllSelection(); onStudySessionSelectionChange()">Select
+                                                All</label>
+                                        </th>
+                                        <th>Subject ID</th>
+                                        <th>Subject Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let subject of filteredSubjects">
+                                        <td>
+                                            <label nz-checkbox> </label>
+                                            <!-- Checkboxes for subjects, add logic if needed-->
+                                        </td>
+                                        <td>{{ subject.id }}</td>
+                                        <td>{{ subject.name }}</td>
+                                    </tr>
+                                </tbody>
+                            </nz-table>
+                        </div>
+                    </div>
+
+                    <div *ngIf="panel.name === 'Room'">
+                        <div class="table-responsive"> <!-- Added table-responsive -->
+                            <nz-table>
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <label nz-checkbox [(ngModel)]="selectAll"
+                                                (ngModelChange)="toggleAllSelection(); onStudySessionSelectionChange()">Select
+                                                All</label>
+                                        </th>
+                                        <th>Room ID</th>
+                                        <th>Room Number</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let room of rooms">
+                                        <td>
+
+                                            <label nz-checkbox>
+
+                                            </label> <!--Checkboxes for Rooms Add logic if needed-->
+                                        </td>
+                                        <td>{{ room.id }}</td>
+                                        <td>{{room.room_number }}</td>
+
+                                    </tr>
+                                </tbody>
+                            </nz-table>
+                        </div>
+
+                    </div>
+                </nz-collapse-panel>
+            </nz-collapse>
+        </ng-container>
+    </nz-modal>
+
+    
+</div>
+
+<style>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /* General Styles */
+    .container {
+        max-width: 1200px;
+        /* Or any desired maximum width */
+        margin: 0 auto;
+        /* Center the container */
+   
+    }
+
+    .w-100 {
+        width: 100% !important;
+        /* Ensure form elements take full width within their grid column */
+    }
+
+    .mb-2 {
+        margin-bottom: 1rem;
+    }
+
+    /* Loading Overlay */
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .loading-overlay p {
+        color: white;
+        margin-top: 10px;
+    }
+
+
+    .text-warning {
+        color: rgb(192, 179, 0);
+        /* Consistent with your original color */
+    }
+
+    /* Modal Table */
+    .modal-table-container {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+</style>

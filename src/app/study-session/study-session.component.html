@@ -1,0 +1,320 @@
+<div class="study-session-container">
+
+
+
+
+    <button nz-button [nzType]="'primary'" (click)="showModal()"><span>បន្ថែម</span></button>
+
+    <!-- 
+             nzClassName="custom-modal"
+    
+        [nzTitle]="undefined" Hide the header/title -->
+    <!-- [nzFooter]="null"  Hide the footer -->
+    
+    
+    <style>
+        ::ng-deep .custom-modal .ant-modal-content {
+            border-radius: 20px;
+            padding: 50px 50px 20px 20px;
+    
+        }
+    </style>
+
+
+    <nz-modal  nzClassName="custom-modal"  [nzTitle]="undefined"   [nzFooter]="null"[(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+        <ng-container *nzModalContent>
+    
+            <div class="add-session-form">
+                <h3>{{ isEditing ? 'កែប្រែ ' : 'បន្ថែម ម៉ោង' }}</h3>
+                <form (ngSubmit)="isEditing ? updateStudySession() : addStudySession()">
+                    <div class="form-group">
+                        <label for="shift_name">ជ្រើសរើសវេនសិក្សារ</label>
+                        <select id="shift_name" class="form-control" [(ngModel)]="newSession.shift_name" name="shift_name"
+                            required>
+                            <option value="">ជ្រើសរើសវេនសិក្សារ</option>
+                            <option value="Monday-Friday Morning">Monday-Friday Morning</option>
+                            <option value="Monday-Friday Afternoon">Monday-Friday Afternoon</option>
+                            <option value="Monday-Friday Evening">Monday-Friday Evening</option>
+                            <option value="Saturday-Sunday">Saturday-Sunday</option>
+                        </select>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="sessions_day">ជ្រើសរើស​ ថ្ងៃ</label>
+                        <select id="sessions_day" class="form-control" [(ngModel)]="newSession.sessions_day"
+                            name="sessions_day" required>
+                            <option value="">Select Day</option>
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                            <option value="Friday">Friday</option>
+                            <option value="Saturday">Saturday</option>
+                            <option value="Sunday">Sunday</option>
+                        </select>
+                    </div>
+    
+
+
+
+
+            <div class="form-group">
+                <label for="session_time_start">ម៉ោង ចាប់ផ្តើម</label>
+                <nz-input-group [nzSuffix]="getTimePeriodText(newSession.session_time_start)">
+                    <input nz-input type="time" [(ngModel)]="newSession.session_time_start" name="session_time_start"
+                        id="session_time_start" required />
+                </nz-input-group>
+            </div>
+            
+            <div class="form-group">
+                <label for="session_time_end">ម៉ោង បញ្ចប់</label>
+                <nz-input-group [nzSuffix]="getTimePeriodText(newSession.session_time_end)">
+                    <input nz-input type="time" [(ngModel)]="newSession.session_time_end" name="session_time_end"
+                        id="session_time_end" required />
+                </nz-input-group>
+            </div>
+
+            
+
+
+
+
+
+                    <style>
+
+
+
+                    </style>
+
+
+                    <br>
+                    <button type="submit" class="btn btn-primary">{{ isEditing ? 'Update ' : 'Add '
+                        }}</button>
+                </form>
+            </div>
+    
+    
+        </ng-container>
+    </nz-modal>
+
+
+
+
+    <div class="session-list" hidden>
+        <table class="table ">
+            <thead>
+                <tr>
+                    <th style="color: rgb(255, 26, 129);">ID</th>
+                    <th style="color: rgb(255, 26, 129);">Shift Name</th>
+                    <th style="color: rgb(255, 26, 129);">Sessions Day</th>
+                    <th style="color: rgb(255, 26, 129);">Start Time</th>
+                    <th style="color: rgb(255, 26, 129);">End Time</th>
+                    <th style="color: rgb(255, 26, 129);">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let session of studySessions">
+                    <td>{{ session.id }}</td>
+                    <td>{{ session.shift_name }}</td>
+                    <td>{{ session.sessions_day }}</td>
+                    <td>{{ session.session_time_start }}</td>
+                    <td>{{ session.session_time_end }}</td>
+                    <td>
+                        <!-- Edit Button -->
+                        <i (click)="editSession(session)" style="color: rgb(7, 172, 255); margin-right: 20px;">Edit</i>
+                        <!-- Delete Button -->
+                        <a nz-popconfirm
+                            nzPopconfirmTitle="Are you sure you want to delete this study session {{ session.id }} ?"
+                            nzPopconfirmPlacement="bottom" (nzOnConfirm)="deleteSession(session.id)"
+                            (nzOnCancel)="cancel()">
+                            Delete
+                        </a>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+
+
+</div>
+
+
+
+<style>
+
+
+
+
+    @media (max-width: 768px) {}
+
+    @media (max-width: 576px) {
+
+        * {
+            font-size: xx-small;
+        }
+    }
+</style>
+
+
+
+
+
+
+
+
+<style>
+    body {
+        font-family: Moul;
+        font-size: xx-small;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: Battambang;
+    }
+
+    th,
+    td {
+        border: 1px solid black;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+</style>
+
+
+<div class="container mt-4  absolute" style="background-color: white; border-radius: 10px; padding: 20px;
+ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+
+
+<div class="session-list">
+
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="color: rgb(255, 26, 129);">Session Time</th>
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+                <th>Saturday</th>
+                <th>Sunday</th>
+            </tr>
+        </thead>
+        <tbody>
+            <style>
+.morning-time {
+  background-color: #c8e6c9; /* Light green for morning sessions */
+  color: #388e3c; /* Green text for morning */
+}
+
+.afternoon-time {
+  background-color: #fff9c4; /* Light yellow for afternoon sessions */
+  color: #fbc02d; /* Yellow text for afternoon */
+}
+
+.evening-time {
+  background-color: #f8bbd0; /* Light pink for evening sessions */
+  color: #d81b60; /* Pink text for evening */
+}
+
+.night-time {
+  background-color: #e8eaf6; /* Light blue for night sessions */
+  color: #303f9f; /* Blue text for night */
+}
+
+            </style>
+            <tr *ngFor="let timeSlotData of timeSlotSessions">
+                <td  [ngClass]="{
+  'morning-time': isMorning(timeSlotData.timeSlot),
+  'afternoon-time': isAfternoon(timeSlotData.timeSlot),
+  'evening-time': isEvening(timeSlotData.timeSlot),
+  'night-time': isNight(timeSlotData.timeSlot)
+}"
+
+>{{ timeSlotData.timeSlot }}</td>
+
+
+                <ng-container *ngFor="let day of daysOfWeek">
+                    <td
+
+                   
+                    
+                    *ngIf="timeSlotData.days[day]; else emptyCell">
+                        <div class="session-cell" >
+
+                            <!--
+                            {{ timeSlotData.days[day].shift_name }}
+                             -->
+                            <div class="actions " >
+
+  
+
+
+                                            <p-button icon="pi pi-pencil" class="mr-2 m-sm-1 " [rounded]="true" [outlined]="true" (click)="editSession(timeSlotData.days[day])" />
+                                            
+                                            <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"  nz-popconfirm
+                                    nzPopconfirmTitle="Are you sure you want to delete this study session {{ timeSlotData.days[day].id }} ?"
+                                    nzPopconfirmPlacement="bottom"
+                                    (nzOnConfirm)="deleteSession(timeSlotData.days[day].id)" (nzOnCancel)="cancel()" />
+
+
+                            </div>
+                        </div>
+                    </td>
+                    <ng-template #emptyCell>
+                        <td class="empty-session-cell">
+                            
+                          
+                        
+                        </td>
+                    </ng-template>
+                </ng-container>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

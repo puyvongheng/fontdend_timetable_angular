@@ -1,0 +1,150 @@
+
+
+<!-- 
+         nzClassName="custom-modal"
+
+    [nzTitle]="undefined" Hide the header/title -->
+<!-- [nzFooter]="null"  Hide the footer -->
+
+
+<style>
+    ::ng-deep .custom-modal .ant-modal-content {
+        border-radius: 20px;
+        padding: 50px 50px 20px 20px;
+
+    }
+</style>
+
+
+    <nz-modal 
+    nzClassName="custom-modal"
+    [(nzVisible)]="isVisible"
+         [nzTitle]="undefined"
+         [nzFooter]="null"
+      
+      (nzOnCancel)="handleCancel()"
+       (nzOnOk)="handleOk()">
+        <ng-container *nzModalContent>
+            <!-- Add Major Form -->
+            <div class=" ">
+                <div class="">
+    
+                    <form id="addMajorForm" class="row g-3" (ngSubmit)="selectedMajorId ? updateMajor() : addMajor()">
+                        <div class="col-md-6">
+                            <label for="majorName" class="form-label">ជំនាញ </label>
+    
+                            <input type="text" [(ngModel)]="majorName" name="majorName" class="form-control"
+                                placeholder="បញ្ចូល ជំនាញ" required>
+                        </div>
+    
+                        <div class="col-md-6">
+                            <label for="departmentSelect" class="form-label">ដេប៉ាតេម៉ង </label>
+    
+                            <select [(ngModel)]="selectedDepartmentId" name="departmentSelect" class="form-select" required>
+                                <option value="" disabled selected> ជ្រើសរើស​ ដេប៉ាតេម៉ង  </option>
+                                <option *ngFor="let department of departments" [value]="department.id">{{
+                                    department.department_name
+                                    }}
+                                </option>
+                            </select>
+                        </div>
+    
+                        <div class="col-12">
+                            <button type="submit" nz-button nzType="primary" nzShape="round" [disabled]="!majorName">
+                                {{ isEditMode ? 'Update ' : 'បន្ថែម' }}
+                            </button>
+                            <button type="button" nz-button nzType="default" nzShape="round" *ngIf="isEditMode"
+                                (click)="resetForm()">
+                                បោះបង
+                            </button>
+                        </div>
+    
+                    </form>
+    
+                </div>
+            </div>
+    
+        </ng-container>
+    </nz-modal>
+
+<div class="container mt-4  absolute" style="background-color: white; border-radius: 10px; padding: 20px;
+ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+
+    <button nz-button [nzType]="'primary'"  nzShape="round"  (click)="showModal()"><span>បន្ថែម</span></button>
+
+
+
+
+
+<p-table [value]="majors" [paginator]="true" [rows]="5" [tableStyle]="{ 'min-width': '50rem' }" [size]="'small'"
+    [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [rowsPerPageOptions]="[5, 10, 20 , majors.length]">
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width:5%" pSortableColumn="id">ID <p-sortIcon field="id" /></th>
+            <th style="width:30%" pSortableColumn="room_number">មហាវិទ្យាល័យ <p-sortIcon field="room_number" /></th>
+            <th style="width:30%" pSortableColumn="room_type">ដេប៉ាតេម៉ង<p-sortIcon field="room_type" /></th>
+                        <th style="width:30%" pSortableColumn="room_type">ជំនាញ<p-sortIcon field="room_type" /></th>
+
+      
+            <th style="width:20%">action</th>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-major>
+        <tr>
+            <td>{{ major.id }}</td>
+            <td>{{major.faculty_name}}</td>
+
+            <td> {{major.department_name}}</td>
+            <td>{{major.major_name}}</td>
+
+    
+
+            <td class="d-flex justify-content-center align-items-center">
+
+        <p-button icon="pi pi-pencil" class="mr-2 " [rounded]="true" [outlined]="true" (click)="editMajor(major)" />
+        
+        <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="deleteMajor(major.id)" />
+
+
+
+
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<hr>
+
+
+
+<style>
+  
+
+    @media (max-width: 768px) {}
+
+    @media (max-width: 576px) {
+
+        .major {
+            font-size: xx-small;
+        }
+    }
+</style>

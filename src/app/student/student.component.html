@@ -1,0 +1,239 @@
+
+
+
+
+<div class="container mt-4  absolute" style="background-color: white; border-radius: 10px; padding: 20px;
+ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+
+<div style="display: flex; justify-content: space-between; align-items: center; width: 100%; "  class="mb-4" >
+    <!-- Left Section: Add Student Button -->
+
+    <div>
+    <button class=" me-1"  nz-button [nzType]="'primary'" nzShape="round"   (click)="showModal()"><span>បន្ថែម</span></button>
+
+    <!-- Button to show the modal -->
+    <button class=" me-1"  nz-button [nzType]="'primary'" nzShape="round" (click)="showModal1()"><span>បន្ថែម Ghost</span></button>
+</div>
+
+    <!-- Right Section: View Toggle (SelectButton) -->
+    <p-selectbutton size="small" [options]="viewOptions" [(ngModel)]="showTableView" [multiple]="false"
+        optionLabel="label" optionValue="value">
+    </p-selectbutton>
+</div>
+
+
+
+
+    <div *ngIf="showTableView">
+        <!-- Table View -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th style="color: rgb(255, 26, 129);">ឈ្មោះ</th>
+                    <th style="color: rgb(255, 26, 129);">Username</th>
+                    <th style="color: rgb(255, 26, 129);">ជំនាញ</th>
+                    <th style="color: rgb(255, 26, 129);">ជំនាន់</th>
+                    <th style="color: rgb(255, 26, 129);">វេនសិក្សា<th>
+                    <th style="color: rgb(255, 26, 129);">ក្រុម</th>
+                    <th style="color: rgb(255, 26, 129);">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let student of students">
+                    <td>{{ student.id }}</td>
+                    <td>{{ student.student_name }}</td>
+                    <td>{{ student.username }}</td>
+                    <td>{{ student.major_name }}</td>
+                    <td>{{ student.generation }}</td>
+                    <td>{{ student.shift_name }}</td>
+                    <td>{{ student.group_student }}</td>
+                    <td>
+                       
+
+
+                                        <p-button icon="pi pi-pencil" class="mr-2 " [rounded]="true" [outlined]="true"  />
+                                        
+                                        <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" nz-popconfirm
+                                            nzPopconfirmTitle="Are you sure delete this room?" nzPopconfirmPlacement="bottom"
+                                            (nzOnConfirm)="deleteStudent(student.id)" />
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        
+    </div>
+
+
+    <div *ngIf="!showTableView" class="card-container">
+        <!-- Card View -->
+        <div *ngFor="let student of students" class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ student.student_name }}</h5>
+                <p class="card-text">Username: {{ student.username }}</p>
+                <p class="card-text">Major: {{ student.major_name }}</p>
+                <p class="card-text">Generation: {{ student.generation }}</p>
+                <p class="card-text">Shift: {{ student.shift_name }}</p>
+                <p class="card-text">Group: {{ student.group_student }}</p>
+                <div class="card-actions">
+
+                    <i style="color: rgb(7, 172, 255); margin-right: 20px;" >Edit</i>
+                    <i style="color: rgb(255, 7, 7);" (click)="deleteStudent(student.id)">Delete</i>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Pagination Controls -->
+    <nz-pagination [nzPageIndex]="currentPage" [nzTotal]="totalStudents" (nzPageIndexChange)="onPageChange($event)"
+        [nzPageSize]="pageSize" [nzShowSizeChanger]="false" [nzPageSizeOptions]="[10, 20, 30, 50]">
+    </nz-pagination>
+    <!-- Display Current Page, Page Size, and Total Students -->
+    <p>Current Page: {{ currentPage }}</p>
+    <p>Page Size: {{ pageSize }}</p>
+    <p>Total Students: {{ totalStudents }}</p>
+
+
+
+</div>
+
+
+<style>
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .card {
+        flex: 1 1 calc(33.333% - 32px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-body {
+        padding: 16px;
+    }
+
+    .card-actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 16px;
+    }
+</style>
+
+
+
+
+
+
+
+
+
+
+<!-- Modal with student form -->
+<nz-modal 
+nzClassName="custom-modal"
+
+[(nzVisible)]="isVisible1" nzTitle="Add Student" (nzOnCancel)="handleCancel1()" (nzOnOk)="handleOk1()">
+    <ng-container *nzModalContent>
+        <!-- Student form -->
+        <form #studentForm="ngForm">
+            <div nz-form-item>
+                <div nz-form-label>
+                    <label for="major_id">Major ID</label>
+                </div>
+             
+
+                <nz-select class="w-100" [(ngModel)]="studentData.major_id" name="major_id"
+                    nzAllowClear nzPlaceHolder="Choose" [nzOptions]="listOfGroupOption" required>
+                
+                </nz-select>
+            
+            </div>
+
+            <div nz-form-item>
+                <div nz-form-label>
+                    <label for="date_joined">Date Joined</label>
+                </div>
+              
+
+
+                <nz-date-picker style="width: 300px; " nzMode="month" [nzFormat]="monthFormat"
+                id="date_joined" name="date_joined"
+                   [(ngModel)]="studentData.date_joined"></nz-date-picker>
+                
+                
+     
+
+            </div>
+
+            <div nz-form-item>
+                <div nz-form-label>
+                    <label for="generation">Generation</label>
+                </div>
+                <div nz-form-control>
+                    <input nz-input id="generation" name="generation" [(ngModel)]="studentData.generation" required />
+                </div>
+            </div>
+
+            <div nz-form-item>
+                <div nz-form-label>
+                    <label for="batch">Batch</label>
+                </div>
+                <div nz-form-control>
+                    <input nz-input id="batch" name="batch" [(ngModel)]="studentData.batch" required />
+                </div>
+            </div>
+
+            <div nz-form-item>
+                <div nz-form-label>
+                    <label for="group_student">Group Student</label>
+                </div>
+                <div nz-form-control>
+                    <input nz-input id="group_student" name="group_student" [(ngModel)]="studentData.group_student"
+                        required />
+                </div>
+            </div>
+
+            <div nz-form-item>
+                <div nz-form-label>
+                    <label for="shift_name">Shift Name</label>
+                </div>
+                <div nz-form-control>
+                    <nz-select  class="w-100" id="shift_name" name="shift_name" [(ngModel)]="studentData.shift_name" required>
+                        <nz-option *ngFor="let shift of allowedShifts" [nzValue]="shift" [nzLabel]="shift"></nz-option>
+                    </nz-select>
+                </div>
+            </div>
+        </form>
+    </ng-container>
+</nz-modal>
+
+
+    <nz-modal nzClassName="custom-modal" [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()"
+        (nzOnOk)="handleOk()">
+        <ng-container *nzModalContent>
+    
+            <app-management-studen-register></app-management-studen-register>
+        </ng-container>
+    </nz-modal>
+
+
+<style>
+    ::ng-deep .custom-modal .ant-modal-content {
+    border-radius: 20px;
+    padding: 50px 50px 20px 20px;
+
+}
+</style>

@@ -1,0 +1,139 @@
+
+
+
+
+
+
+
+
+
+    <!-- 
+         nzClassName="custom-modal"
+
+    [nzTitle]="undefined" Hide the header/title -->
+    <!-- [nzFooter]="null"  Hide the footer -->
+
+    
+    <style>
+        ::ng-deep .custom-modal .ant-modal-content {
+            border-radius: 20px;
+            padding: 50px 50px 20px 20px;
+    
+        }
+    </style>
+
+
+
+<nz-modal     nzClassName="custom-modal"
+
+ [(nzVisible)]="isVisible"     [nzTitle]="undefined"
+  [nzFooter]="null"
+
+  (nzOnCancel)="handleCancel()" 
+  (nzOnOk)="handleOk()">
+    <ng-container *nzModalContent>
+    <div class="card-body">
+        <p class="card-title">{{ selectedFacultyId ? 'កែប្រែ' : 'បន្ថែម' }} មហាវិទ្យាល័យ</p>
+    
+        <form id="addFacultyForm" (ngSubmit)="selectedFacultyId ? updateFaculty() : addFaculty()">
+            <div class="mb-3 ">
+                <nz-input-group>
+                    <input type="text" name="facultyName" nz-input [(ngModel)]="newFacultyName"
+                        placeholder="មហាវិទ្យាល័យ" />
+                </nz-input-group>
+            </div>
+            <button type="submit" nz-button nzType="primary" nzShape="round" [disabled]="!newFacultyName">
+                {{ selectedFacultyId ? 'Update មហាវិទ្យាល័យ' : 'Add មហាវិទ្យាល័យ' }}
+            </button>
+    
+            <button nz-button nzType="primary" nzShape="round" *ngIf="isEditMode" (click)="resetForm()">Cancel</button>
+        </form>
+    </div>
+
+    </ng-container>
+</nz-modal>
+
+
+<div class="container mt-4  absolute" style="background-color: white; border-radius: 10px; padding: 20px;
+ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+
+<button nz-button [nzType]="'primary'" nzShape="round" (click)="showModal()"><span>បន្ថែម</span></button>
+
+
+
+
+<p-table [value]="faculties" [paginator]="true" [rows]="5" [tableStyle]="{ 'min-width': '50rem' }" [size]="'small'"
+    [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [rowsPerPageOptions]="[5, 10, 20 , faculties.length]">
+
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width:5%" pSortableColumn="id">ID <p-sortIcon field="id" /></th>
+            <th style="width:30%" pSortableColumn="faculty_name">មហាវិទ្យាល័យ <p-sortIcon field="faculty_name" /></th>
+          
+            <th style="width:20%">action</th>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-facultie>
+        <tr>
+            <td>{{ facultie.id }}</td>
+            <td>{{facultie.name}}</td>
+
+
+
+
+
+            <td class="d-flex justify-content-center align-items-center">
+
+                <p-button icon="pi pi-pencil" class="mr-2 " [rounded]="true" [outlined]="true" (click)="editFaculty(facultie.id)" />
+                
+                <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="deleteFaculty(facultie.id)" />
+
+
+
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+<style>
+     .search-box {
+        padding: 8px;
+      }
+
+      .search-box input {
+        width: 188px;
+        margin-bottom: 8px;
+        display: block;
+      }
+
+      .search-box button {
+        width: 90px;
+      }
+
+      .search-button {
+        margin-right: 8px;
+      }
+</style>
+
+
+
+
+
+
+
+
+

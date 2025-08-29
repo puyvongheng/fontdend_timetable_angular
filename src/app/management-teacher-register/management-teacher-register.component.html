@@ -1,0 +1,58 @@
+<div class="container">
+    <h2 class="text-center">ចុះឈ្មោះគ្រូ</h2>
+
+    <!-- Success Message -->
+    <div *ngIf="submissionSuccess" class="alert alert-success">បង្កើតដោយជោគជ័យ!</div>
+
+    <!-- Error Message -->
+    <div *ngIf="submissionError" class="alert alert-danger">
+        {{ submissionError }}
+    </div>
+
+    <!-- Form -->
+    <form [formGroup]="teacherForm" (ngSubmit)="onSubmit()">
+        <!-- Username Field -->
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input id="username" type="text" class="form-control" formControlName="username"
+                placeholder="Enter username" />
+            <div *ngIf="teacherForm.get('username')?.invalid && teacherForm.get('username')?.touched"
+                class="text-danger">
+                ឈ្មោះអ្នកប្រើត្រូវបានទាមទារ ហើយត្រូវតែមានយ៉ាងហោចណាស់ 4 តួអក្សរ។
+            </div>
+        </div>
+
+        <!-- Name Field -->
+        <div class="form-group">
+            <label for="name">ឈ្មោះ</label>
+            <input id="name" type="text" class="form-control" formControlName="name" placeholder="បញ្ចូលឈ្មោះ" />
+            <div *ngIf="teacherForm.get('name')?.invalid && teacherForm.get('name')?.touched" class="text-danger">
+                ទាមទារឈ្មោះ។
+            </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group">
+            <label for="password">ពាក្យសម្ងាត់</label>
+            <div class="input-group">
+                <input id="password" [type]="showPassword ? 'text' : 'password'" class="form-control"
+                    formControlName="password" placeholder="បញ្ចូលពាក្យសម្ងាត់" />
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-outline-secondary" (click)="togglePasswordVisibility()"
+                        [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
+                        <i class="fa" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary"
+                        (click)="generatePassword()">Generate</button>
+                </div>
+            </div>
+            <div *ngIf="teacherForm.get('password')?.invalid && teacherForm.get('password')?.touched"
+                class="text-danger">
+                ទាមទារពាក្យសម្ងាត់ ហើយត្រូវមានយ៉ាងហោចណាស់ 8 តួអក្សរ។
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary w-100 mt-2" [disabled]="teacherForm.invalid">ចុះឈ្មោះ</button>
+    </form>
+</div>

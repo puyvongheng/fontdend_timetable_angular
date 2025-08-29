@@ -1,0 +1,222 @@
+<div >
+
+<div *ngIf="teacherDetails" class=" bg-light p-4">
+    <nz-avatar [nzSize]="64" [nzSrc]="'https://cdn-icons-png.flaticon.com/512/1089/1089129.png'"></nz-avatar>
+    <nz-divider nzPlain nzText=" " nzVariant="dashed"></nz-divider>
+    <style>
+        ::ng-deep .ant-descriptions-title {
+            color: rgb(255, 26, 129);
+            /* Your custom color */
+        }
+    </style>
+    <nz-descriptions nzTitle="ប្រវត្តិរូប">
+   
+        <nz-descriptions-item nzTitle="ឈ្មោះ">{{ teacherDetails?.name }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Role">{{ teacherDetails?.role }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="មុខវិជ្ជា">
+            <ul class="list-unstyled">
+                <li *ngFor="let subject of findSubject(teacherDetails?.id) let i = index  "
+                    [ngClass]="{'text-red': subject.subject_name === 'មិនទាន់មានមុខវិជ្ជាទេ។'}">
+                    {{ i + 1}}.{{subject.subject_name }}
+                </li>
+            </ul>
+        </nz-descriptions-item>
+        <style>
+            .text-red {
+                color: red;
+            }
+        </style>
+    </nz-descriptions>
+    <nz-divider nzPlain nzVariant="dashed"></nz-divider>
+    <br>
+    <span style="color: rgb(255, 30, 150);">Assign មុខវិជ្ជា </span>
+    <style>
+         nz-select {
+        margin: 0 8px 10px 0;
+        width: 300px;
+      }
+    </style>
+
+    <br>
+    <br>
+    <br>
+
+    <ul class="list-unstyled">
+        <li *ngFor="let subject of findSubject(teacherDetails?.id)">
+            <p class="cursor-pointer " (click)="removeSubjectFromTeachers( teacherDetails?.id , subject.id  )">{{
+                subject.subject_name }}
+            </p>
+        </li>
+    </ul>
+
+    <style>
+        .cursor-pointer {
+            cursor: pointer;
+        }
+    </style>
+
+
+      
+
+
+
+
+        <nz-select [(ngModel)]="selectedValuesubjects_id"  nzAllowClear nzShowSearch nzPlaceHolder="ជ្រើសរើស មុខវិជ្ជា:" [nzOptions]="listOfGroupOption"></nz-select>
+
+
+
+<button nz-button [nzType]="'primary'"
+ (click)="load_subjects('1', '')">
+    <span>ឆ្នាំទី១</span>
+</button>
+<button nz-button [nzType]="'primary'" (click)="load_subjects('2', '')">
+        <span>ឆ្នាំទី២</span>
+</button>
+<button nz-button [nzType]="'primary'" (click)="load_subjects('3', '')">
+    <span>ឆ្នាំទី3</span>
+</button>
+<button nz-button [nzType]="'primary'" (click)="load_subjects('4', '')">
+    <span>ឆ្នាំទី4</span>
+</button>
+
+
+
+        <button  *ngIf="selectedValuesubjects_id" 
+        nz-button [nzType]="'primary'" (click)="assignSubjectToTeacher(teacherDetails?.id)">
+            <span> Assign មុខវិជ្ជា {{ selectedValuesubjects_id }} </span>
+        </button>
+
+
+
+
+
+
+
+
+
+<br>
+
+
+<button nz-button [nzType]="'primary'" (click)="showModal()"><span>ម៉ោងបង្រៀន </span></button>
+<nz-modal nzWidth="90%" [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <ng-container *nzModalContent>
+
+
+        
+    <nz-table #basicTable [nzData]="studySessions_1">
+        <thead>
+            <tr>
+                <th>
+                    <label nz-checkbox [(ngModel)]="selectAll" (ngModelChange)="toggleAllSelection()">Select All</label>
+                </th>
+                <th>Session ID</th>
+                <th>Shift Name</th>
+                <th>Session Day</th>
+                <th>start</th>
+                <th>end</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let session of studySessions_1">
+                <td>
+    
+                    <label nz-checkbox [(ngModel)]="session.selected">
+                        <p *ngIf="checkIfSessionAssigned(session.id)" style="color: green;">
+                            បង្រៀន
+                        </p>
+                        <p *ngIf="!checkIfSessionAssigned(session.id)" style="color: red;">
+                            មិនអាចបង្រៀន
+                        </p>
+                    </label>
+    
+                </td>
+                <td>{{ session.id }}
+                </td>
+                <td>{{ session.shift_name }}</td>
+                <td>{{ session.sessions_day }}</td>
+    
+                <td>{{ session.session_time_start }}</td>
+                <td>{{ session.session_time_end }}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+    
+    
+    <div class="sticky">
+        <div class="container mt-4">
+            <button class="btn btn-success" (click)="submitStudySessions(teacherDetails?.id)">បង្រៀន</button>
+        </div>
+    
+        <div class="container mt-4">
+            <button class="btn btn-danger" (click)="submitDeleteStudySessions(teacherDetails?.id)">មិនអាចបង្រៀន</button>
+        </div>
+        <style>
+            .sticky {
+                position: fixed;
+                bottom: 20px;
+                /* Adjust distance from the bottom */
+    
+                z-index: 999;
+                display: flex;
+            }
+    
+            .container {
+                margin: 0;
+            }
+        </style>
+    </div>
+    </ng-container>
+</nz-modal>
+
+
+
+
+
+</div>
+
+
+
+            <!-- Display Student Details if logged in -->
+            <div *ngIf="studentDetails" class="shadow-lg p-4">
+                <nz-avatar [nzSize]="64" [nzSrc]="'https://cdn-icons-png.flaticon.com/512/201/201818.png'"></nz-avatar>
+                <nz-divider nzPlain nzText="" nzVariant="dashed"></nz-divider>
+                <nz-descriptions nzTitle="ប្រវត្តិរូប ">
+                    <nz-descriptions-item nzTitle="ឈ្មោះ">{{ studentDetails.name }}</nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="ជំនាញ">{{
+                        findMajor(studentDetails.major_id)?.major_name||'Unknown'}}</nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="វេនសិក្សា">{{ studentDetails.shift_name }}</nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="ក្រុម">{{ studentDetails.group_student }}</nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="ថ្ងែចូលរៀន">{{ studentDetails.date_joined |
+                        date:'yyyy/MM/dd'}}</nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="ជំាន់">{{ getYearMinus2007() }}</nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="ឆ្នាំទី">{{ getYear() +1- getYearMinus2007()}}</nz-descriptions-item>
+                </nz-descriptions>
+            </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div *ngIf="!teacherDetails&&!studentDetails">
+    {{gotologin()}}
+</div>
+
+
+
+
+<app-totalscore *ngIf="studentDetails" [filters_only_student_id]="filters_only_student_id"  [filters]="filters">
+
+
+</app-totalscore>

@@ -1,0 +1,328 @@
+
+<nav class="navbar navbar-expand-lg" style="width: 100%;">
+    <div class="container-fluid">
+        <!-- Navbar Logo -->
+        <a class="navbar-brand">
+            <!-- You can place your logo or text here -->
+        </a>
+
+        <!-- Toggler button for mobile (opens Drawer) -->
+        <button class="navbar-toggler" type="button" (click)="openDrawer()">
+            <i *ngIf="!isDrawerVisible" class="fa fa-bars" aria-hidden="true"></i>
+            <i *ngIf="isDrawerVisible" class="fa fa-times" aria-hidden="true"></i>
+        </button>
+
+        <!-- Desktop Navbar -->
+        <div class="collapse navbar-collapse d-none d-lg-block">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item" *ngIf="studentDetails">
+                    <a [routerLink]="['/print']" class="nav-link" routerLinkActive="active">មើលកាលវិភាគ</a>
+                </li>
+                <li class="nav-item" *ngIf="teacherDetails">
+                    <a [routerLink]="['/printTeacher']" class="nav-link" routerLinkActive="active">មើលកាលវិភាគ</a>
+                </li>
+                <li class="nav-item">
+                    <a [routerLink]="['/t']" class="nav-link" routerLinkActive="active">មើលកាលវិភាគទាំងអស់</a>
+                </li>
+                <li class="nav-item" *ngIf="!studentDetails && !teacherDetails">
+                    <a class="nav-link" [routerLink]="['/login']" routerLinkActive="router-link-active">Log in</a>
+                </li>
+            
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" id="navbarDropdown"
+                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://i.pravatar.cc/40" alt="Avatar" class="rounded-circle" width="20"
+                            height="20" />
+                        <span class="d-none d-md-inline" *ngIf="teacherDetails">{{ teacherDetails.name }}</span>
+                        <span class="d-none d-md-inline" *ngIf="studentDetails">{{ studentDetails.name }}</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li *ngIf="teacherDetails">
+                            <a [routerLink]="['/Profile']" class="dropdown-item">ប្រវត្តិរូប</a>
+                        </li>
+                        <li *ngIf="studentDetails">
+                            <a [routerLink]="['/Profile']" class="dropdown-item">ប្រវត្តិរូប</a>
+                        </li>
+                        <li *ngIf="teacherDetails || studentDetails">
+                            <a class="dropdown-item" (click)="logout()">ចាកចេញ</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+
+<!-- Bottom Navbar for Mobile -->
+<nav class="navbar fixed-bottom bg-white d-lg-none shadow-lg border-top cool-bottom-nav">
+    <div class="container-fluid d-flex justify-content-around text-center">
+
+        <!-- Home -->
+        <a class="nav-link flex-fill" [routerLink]="['/Profile']" routerLinkActive="active-nav"
+            [routerLinkActiveOptions]="{ exact: true }">
+            <i class="fa fa-home"></i>
+            <div class="nav-label">Home</div>      </a>
+
+        <!-- Time -->
+        <a *ngIf="studentDetails" class="nav-link flex-fill" [routerLink]="['/printTeacher']" routerLinkActive="active-nav">
+            <i class="fa fa-calendar"></i>
+            <div class="nav-label">Time</div>
+        </a>
+        <a *ngIf="teacherDetails" class="nav-link flex-fill" [routerLink]="['/printTeacher']"
+            routerLinkActive="active-nav">
+            <i class="fa fa-calendar"></i>
+            <div class="nav-label">Time</div>
+        </a>
+
+        <!-- Settings -->
+        <a class="nav-link flex-fill" [routerLink]="['/settings']" routerLinkActive="active-nav">
+            <i class="fa fa-cog"></i>
+            <div class="nav-label">Settings</div>
+        </a>
+
+        <!-- Menu Toggle -->
+        <a class="nav-link flex-fill" (click)="isDrawerVisible ? closeDrawer() : openDrawer()">
+            <i *ngIf="!isDrawerVisible" class="fa fa-bars"></i>
+            <i *ngIf="isDrawerVisible" class="fa fa-times"></i>
+            <div class="nav-label">Menu</div>
+        </a>
+
+    </div>
+</nav>
+<style>
+
+    .cool-bottom-nav {
+        background: linear-gradient(to right, #f8f9fa, #e9ecef);
+        border-top: 1px solid rgba(0, 0, 0, 0.08);
+        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+        padding: 4px 0;
+
+        border-radius: 20px;
+        margin: 5px;
+    }
+    
+    .cool-bottom-nav .nav-link {
+        padding: 10px 0;
+        color: #495057;
+        font-size: 0.85rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: color 0.3s ease, transform 0.3s ease;
+        border-radius: 14px;
+        position: relative;
+    }
+    
+    .cool-bottom-nav .nav-link i,
+    .cool-bottom-nav .nav-link img {
+        font-size: 1.3rem;
+        margin-bottom: 2px;
+        transition: transform 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Hover effect on icon */
+    .cool-bottom-nav .nav-link:hover i,
+    .cool-bottom-nav .nav-link:hover img {
+        transform: scale(1.2);
+        color: #0d6efd;
+    }
+    
+    /* Active link styles */
+    .cool-bottom-nav .active-nav {
+        color: #0d6efd;
+        font-weight: 600;
+    }
+    
+    /* Make sure icon inside active link inherits the active color and scales */
+    .cool-bottom-nav .active-nav i,
+    .cool-bottom-nav .active-nav img {
+        color: #0d6efd;
+        transform: scale(1.2);
+    }
+    
+    /* Label below icons */
+    .cool-bottom-nav .nav-label {
+        font-size: 0.75rem;
+        margin-top: 2px;
+    }
+    
+    /* Animated underline bar on active nav */
+    .cool-bottom-nav .active-nav::after {
+        content: "";
+        position: absolute;
+        top: 0;               /* underline at top */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 30%;
+        height: 3px;
+        background: #0d6efd;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+    }
+    
+</style>
+
+
+<nz-drawer [nzVisible]="isDrawerVisible" nzTitle="ម៉ឺនុយ" [nzPlacement]="'right'" [nzClosable]="true"
+(nzOnClose)="closeDrawer()" [nzBodyStyle]="{ padding: '0', height: '80%', overflowY: 'auto', marginBottom: '10%' }">
+<ng-container *nzDrawerContent>
+<ul nz-menu nzMode="inline" class="w-100">
+
+
+    <li nz-menu-item *ngIf="studentDetails">
+        <a [routerLink]="['/print']" (click)="closeDrawer()">
+            <i nz-icon nzType="calendar" nzTheme="outline"></i>
+            <span>មើលកាលវិភាគ</span>
+        </a>
+    </li>
+    
+    <li nz-menu-item *ngIf="teacherDetails">
+        <a [routerLink]="['/printTeacher']" (click)="closeDrawer()">
+            <i nz-icon nzType="calendar" nzTheme="outline"></i>
+            <span>មើលកាលវិភាគ</span>
+        </a>
+    </li>
+    
+    <li nz-menu-item>
+        <a [routerLink]="['/t']" (click)="closeDrawer()">
+            <i nz-icon nzType="calendar" nzTheme="outline"></i>
+            <span>មើលកាលវិភាគទាំងអស់</span>
+        </a>
+    </li>
+
+
+    <li nz-menu-item *ngIf="teacherDetails || studentDetails">
+        <a (click)="logout(); closeDrawer()" class="text-danger">
+            <i nz-icon nzType="logout" nzTheme="outline"></i>
+            <span>ចាកចេញ</span>
+        </a>
+    </li>
+
+
+    <hr>
+
+
+    <div *ngIf="!studentDetails">
+  <li nz-submenu nzTitle="ផ្ទាំងគ្រប់គ្រង" [nzIcon]="'pie-chart'">
+    <ul>
+      <li nz-menu-item><a routerLink="/dashboard" (click)="closeDrawer()">ផ្ទាំងគ្រប់គ្រង</a></li>
+    </ul>
+  </li>
+
+  <li nz-submenu nzTitle="កាលវិភាគ" [nzIcon]="'calendar'">
+    <ul>
+      <li nz-menu-item><a routerLink="/timetables" (click)="closeDrawer()">កាលវិភាគ</a></li>
+      <li nz-menu-item><a routerLink="/printTeacher" (click)="closeDrawer()">កាលវិភារបស់ខ្ញុំ</a></li>
+      <li nz-menu-item><a routerLink="/t" (click)="closeDrawer()">កាលវិភាគសាធាណៈ</a></li>
+    </ul>
+  </li>
+
+  <li nz-menu-item><a routerLink="/management-teacher" (click)="closeDrawer()">គ្រូ</a></li>
+
+  <li nz-submenu nzTitle="និស្សិត" [nzIcon]="'user'">
+    <ul>
+      <li nz-menu-item>
+        <a routerLink="/students" (click)="closeDrawer()">students(v01) <nz-tag nzColor="orange">កំពុងអភិវឌ្ឍន៍</nz-tag></a>
+      </li>
+      <li nz-menu-item>
+        <a routerLink="/tblstudens" (click)="closeDrawer()">tblstudens(v02) <nz-tag nzColor="orange">កំពុងអភិវឌ្ឍន៍</nz-tag></a>
+      </li>
+      <li nz-menu-item>
+        <a routerLink="/Reportstudents" (click)="closeDrawer()">Reportstudents <nz-tag nzColor="orange">Reportstudents</nz-tag></a>
+      </li>
+    </ul>
+  </li>
+
+  <li nz-submenu nzTitle="គ្រប់គ្រង" [nzIcon]="'folder'">
+    <ul>
+      <li nz-menu-item><a routerLink="/facultie" (click)="closeDrawer()">មហាវិទ្យាល័យ</a></li>
+      <li nz-menu-item><a routerLink="/department" (click)="closeDrawer()">ដេប៉ាត់ដេម៉ង់</a></li>
+      <li nz-menu-item><a routerLink="/major" (click)="closeDrawer()">ជំនាញ</a></li>
+      <li nz-menu-item><a routerLink="/subjects" (click)="closeDrawer()">មុខវិជ្ជា</a></li>
+      <li nz-menu-item><a routerLink="/room" (click)="closeDrawer()">បន្ទប់</a></li>
+      <li nz-menu-item><a routerLink="/studysession" (click)="closeDrawer()">វេនសិក្សា</a></li>
+    </ul>
+  </li>
+
+  <li nz-submenu nzTitle="ពិន្ទុ" [nzIcon]="'star'">
+    <ul>
+      <li nz-menu-item><a routerLink="/score" (click)="closeDrawer()">ដាក់ពិន្ទុ <nz-tag nzColor="orange">កំពុងអភិវឌ្ឍន៍</nz-tag></a></li>
+      <li nz-menu-item><a routerLink="/exams" (click)="closeDrawer()">ពេលវេលាប្រឡង <nz-tag nzColor="orange">កំពុងអភិវឌ្ឍន៍</nz-tag></a></li>
+      <li nz-menu-item><a routerLink="/score_types" (click)="closeDrawer()">ប្រភេទពិន្ទុក <nz-tag nzColor="orange">កំពុងអភិវឌ្ឍន៍</nz-tag></a></li>
+      <li nz-menu-item><a routerLink="/totalscore" (click)="closeDrawer()">លទ្ធផលពិន្ទុក <nz-tag nzColor="orange">កំពុងអភិវឌ្ឍន៍</nz-tag></a></li>
+    </ul>
+  </li>
+
+  <li nz-submenu nzTitle="របាយការណ៍សាកលវិទ្យាល័យ" [nzIcon]="'bank'">
+    <ul>
+      <li nz-submenu nzTitle="និស្សិត" [nzIcon]="'team'">
+        <ul>
+          <li nz-menu-item><a (click)="showProFeature(); closeDrawer()">លទ្ធផលសិក្សា <nz-tag nzColor="gold">PRO</nz-tag></a></li>
+          <li nz-menu-item><a (click)="showProFeature(); closeDrawer()">ប្រឡងសង <nz-tag nzColor="gold">PRO</nz-tag></a></li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="គ្រូបង្រៀន" [nzIcon]="'user'">
+        <ul>
+          <li nz-menu-item><a (click)="showProFeature(); closeDrawer()">របាយការណ៍ចំណាត់ថ្នាក់ <nz-tag nzColor="gold">PRO</nz-tag></a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+
+</div>
+
+</ul>
+</ng-container>
+</nz-drawer>
+
+
+
+<style>
+    .navbar {
+        background: linear-gradient(135deg, #1699f600, #0caeff18);
+      }
+      
+      .navbar-brand {
+        font-weight: bold;
+        color: rgb(0, 0, 0) !important;
+      }
+      
+      .nav-link {
+        color: rgb(0, 0, 0) !important;
+        font-size: 16px;
+        font-weight: 500;
+        margin-right: 15px;
+        transition: color 0.3s ease, transform 0.3s ease;
+      }
+      
+      .nav-link.active {
+        color: #0894ff !important;
+        font-weight: bold;
+        position: relative;
+      }
+      
+      .nav-link.active::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(135deg, #ff2081, #ff1c7e, #ff509c);
+      }
+      
+      .navbar-toggler {
+        border: none;
+      }
+      
+      @media (max-width: 992px) {
+        .d-none.d-lg-block {
+          display: none !important;
+        }
+      }
+      
+</style>
+  

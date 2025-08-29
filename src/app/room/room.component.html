@@ -1,0 +1,157 @@
+
+<!-- 
+         nzClassName="custom-modal"
+
+    [nzTitle]="undefined" Hide the header/title -->
+<!-- [nzFooter]="null"  Hide the footer -->
+
+
+<style>
+    ::ng-deep .custom-modal .ant-modal-content {
+        border-radius: 20px;
+        padding: 50px 50px 20px 20px;
+
+    }
+</style>
+
+
+<!-- Departments Table -->
+<nz-modal nzClassName="custom-modal" [nzTitle]="undefined" [nzFooter]="null"[(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <ng-container *nzModalContent>
+        <div class=" ">
+            <div class="">
+
+                <!-- Add/Update Room Form -->
+                <h3>{{ selectedRoomId ? 'Update Room' : 'Add Room' }}</h3>
+                <form (ngSubmit)="selectedRoomId ? updateRoom() : addRoom()">
+                    <div class="form-row">
+                        <!-- Room Number Input -->
+                        <div class="col-md-6">
+                            <label for="roomNumber">លេខបន្ទប់</label>
+                            <input type="text" id="roomNumber" class="form-control" [(ngModel)]="roomNumber"
+                                name="roomNumber" required>
+                        </div>
+
+                        <!-- Capacity Input -->
+                        <div class="col-md-6">
+                            <label for="capacity">ចំនួនផ្ទុក</label>
+                            <input type="number" id="capacity" class="form-control" [(ngModel)]="capacity"
+                                name="capacity" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <!-- Floor Input -->
+                        <div class="col-md-6">
+                            <label for="floor">ជាន់</label>
+                            <input type="text" id="floor" class="form-control" [(ngModel)]="floor" name="floor"
+                                required>
+                        </div>
+
+                        <!-- Room Type Input -->
+                        <div class="col-md-6">
+                            <label for="roomType">ប្រភេទពិន្ទុក</label>
+                            <select id="roomType" class="form-control" [(ngModel)]="roomType" name="roomType" required>
+                                <option value="Classroom">Classroom</option>
+                                <option value="Lecture Hall">Lecture Hall</option>
+                                <option value="Laboratory">Laboratory</option>
+                            <option value="Computer">Computer</option>
+
+
+                                
+                            </select>
+                        </div>
+
+
+                        {{roomNumber}}
+                        {{capacity}}
+                        {{floor}}
+                        {{roomType}}
+
+
+
+
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <button type="submit" class="btn btn-primary">{{ selectedRoomId ? 'Update Room' : 'Add Room'
+                            }}</button>
+                        <button type="button" class="btn btn-secondary" (click)="clearForm()">Clear</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </ng-container>
+</nz-modal>
+
+
+
+<div class="container mt-4  absolute" style="background-color: white; border-radius: 10px; padding: 20px;
+ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+
+<button nz-button [nzType]="'primary'" nzShape="round" (click)="showModal()"><span>បន្ថែម</span></button>
+
+
+
+<p-table [value]="rooms" [paginator]="true" [rows]="5" [tableStyle]="{ 'min-width': '50rem' }" [size]="'small'"
+    [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [rowsPerPageOptions]="[5, 10, 20 , rooms.length]">
+
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width:20%" pSortableColumn="id">ID <p-sortIcon field="id" /></th>
+            <th style="width:20%"  pSortableColumn="room_number">លេខបន្ទប់ <p-sortIcon field="room_number" /></th>
+            <th style="width:30%" pSortableColumn="room_type">ប្រភេទបន្ទប់ <p-sortIcon field="room_type" /></th>
+            <th style="width:30%" pSortableColumn="capacity">ចំនួនផ្ទុក <p-sortIcon field="capacity" /></th>
+            <th> ជាន់ </th>
+            <th style="width:20%">action</th>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-rooms>
+        <tr>
+            <td>{{ rooms.id }}</td>
+            <td>{{ rooms.room_number }}</td>
+            <td>{{ rooms.room_type }}</td>
+            <td>{{ rooms.capacity }}</td>
+
+            <td>{{ rooms.floor }}</td>
+
+
+
+
+            <td class="d-flex justify-content-center align-items-center">
+
+                <p-button icon="pi pi-pencil" class="mr-2 " [rounded]="true" [outlined]="true" (click)="editRoom(rooms.id)" />
+                
+                <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" nz-popconfirm
+                    nzPopconfirmTitle="Are you sure delete this room?" nzPopconfirmPlacement="bottom"
+                    (nzOnConfirm)="confirmDelete(rooms.id)" />
+
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+
+
+
+
+</div>
+
+
+
+
+<style>
+ 
+    @media (max-width: 768px) {}
+
+    @media (max-width: 576px) {
+
+        * {
+            font-size: xx-small;
+        }
+    }
+</style>

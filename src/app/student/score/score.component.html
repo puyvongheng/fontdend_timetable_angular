@@ -1,0 +1,226 @@
+
+
+
+
+
+
+
+
+
+
+<div *ngIf="totalStudents > 0 " class="container mt-4  absolute" style="background-color: white; border-radius: 10px; padding: 20px;
+ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+
+
+
+
+
+
+
+
+
+    <div class="row mb-3">
+
+        <div class="col-md-3">
+            <label>Exam {{filters.exam_id}}</label>
+            <select class="form-select" [(ngModel)]="filters.exam_id" (change)="onFilterChange()">
+                <option  [value]="">all</option>
+                <option *ngFor="let e of examOptions" [value]="e.id">{{ e.name }}</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label>Major  {{filters.major_id}}</label>
+            <select class="form-select" [(ngModel)]="filters.major_id" (change)="onFilterChange()">
+                <option value="">All</option>
+
+                <option *ngFor="let m of majorOptions" [value]="m.id">{{ m.name }}</option>
+            </select>
+        </div>
+
+    
+
+
+        <div class="col-md-3">
+
+            <label>subject {{filters.subject_id}}</label>
+            <select class="form-select" [(ngModel)]="filters.subject_id" (change)="onFilterChange()">
+                <option value="">All</option>
+        
+                <option *ngFor="let m of subject_idOptions" [value]="m.id">{{ m.name }}</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label>Gen {{filters.generation}} </label>
+            <select class="form-select" [(ngModel)]="filters.generation" (change)="onFilterChange()">
+                    <option value="">All</option>     
+                <option [value]="17">17</option>
+
+                <option  [value]="16">16</option>
+                            <option [value]="15">15</option>
+
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label>batch {{filters.batch}} </label>
+            <select class="form-select" [(ngModel)]="filters.batch" (change)="onFilterChange()">
+                <option value="">All</option>
+                <option [value]="1">1</option>
+                <option [value]="2">2</option>
+                <option [value]="3">3</option>
+                <option [value]="4">4</option>
+        
+        
+            </select>
+        </div>
+            <div class="col-md-3">
+                <label>group {{filters.group_student}} </label>
+                <select class="form-select" [(ngModel)]="filters.group_student" (change)="onFilterChange()">
+                    <option value="">All</option>
+                    <option [value]="1">1</option>
+                    <option [value]="2">2</option>
+                    <option [value]="3">3</option>
+                    <option [value]="4">4</option>
+            
+            
+                </select>
+            </div>
+
+
+
+        <div class="col-md-3">
+            <label>Shift {{filters.shift_name}} </label>
+            <select class="form-select" [(ngModel)]="filters.shift_name" (change)="onFilterChange()">
+                <option value="">All</option>
+                <option *ngFor="let s of shiftOptions" [value]="s.name">{{ s.name }}</option>
+            </select>
+        </div>
+    </div>
+
+</div>
+
+
+<div *ngIf="totalStudents > 0 " class="container mt-4  absolute" style="background-color: white; border-radius: 10px; padding: 20px;
+ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+
+
+
+<!--
+ <h2>ជំនាញ : {{filters.major_id}}  </h2><p>ក្រុម : {{filters.group_student}}</p>
+-->
+
+
+<p>
+<strong *ngFor="let data of majors_fillter">
+        ជំនាញ : {{data.major_name}}
+</strong>
+ <strong> ជំនាន់ : </strong> {{filters.generation}} <br>
+<strong> ឆ្នាំទី :</strong> {{filters.batch}} <br>
+ <strong> វេនសិក្សារ: </strong> {{filters.shift_name}} <br>
+</p>
+
+<div *ngIf="exam">
+    <p>
+        <strong>កាប្រឡង:</strong> {{ exam.name }}<br>
+        <strong>Semester:</strong> {{ exam.semester }}<br>
+        <strong>Year:</strong> {{ exam.year }}<br>
+        <strong>Date:</strong> {{ exam.date | date: 'fullDate' }}
+    </p>
+    <p>Total Students: {{ totalStudents | number }}</p>
+
+</div>
+
+
+
+
+
+
+
+<p-table [value]="scores2" [paginator]="true" [rows]="5" [tableStyle]="{ 'min-width': '50rem' }" [size]="'small'"
+    [showCurrentPageReport]="true" currentPageReportTemplate="បង្ហាញ {first} ទៅ {last} នៃ {totalRecords} ទិន្ន័យ"
+    [rowsPerPageOptions]="[5, 10, 20 , scores2.length]">
+
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Student Name</th>
+            <th>Subject Name</th>
+            <th *ngFor="let key of getHeaderKeys()">{{ key }}</th>
+            <th>ពិន្ទុកសរុប ​</th>
+            <th>avg</th>
+            <th>ពិន្ទុកសរុប With Status</th>
+
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-score>
+        <tr>
+            <td>{{ score['Student Name'] }}</td>
+            <td>{{ score['Subject Name'] }}</td>
+
+            <td *ngFor="let key of getHeaderKeys()">
+                <div *ngIf="!editingCell[score['Student Name'] + '_' + score['Subject Name'] + '_' + key]">
+                    <!-- Display score and Edit button -->
+                    <span [ngStyle]="getScoreColor(score[key])" (dblclick)="toggleEdit(score, key)">
+                        {{ score[key] }}
+                    </span>
+
+                 
+                 
+                </div>
+
+                <div *ngIf="editingCell[score['Student Name'] + '_' + score['Subject Name'] + '_' + key]">
+                    <!-- Editable input and Save button -->
+
+                    <nz-input-number [(ngModel)]="score[key]" nzMin="1" 
+                       [nzMax]="getMaxScoreByName(key)"
+                    />
+
+                
+
+                    <button class="btn btn-sm" (click)="toggleEdit(score, key)">
+                        ✅
+                    </button>
+                    
+                </div>
+            </td>
+
+            <td>
+
+                    <span [ngStyle]="getScoreColor(score['ពិន្ទុកសរុប'])">
+                        {{ score['ពិន្ទុកសរុប'] }}
+                    </span>
+
+
+
+
+            </td>
+            <td>
+
+                    <span [ngStyle]="getScoreColor(score['Total មធ្យមភាគ'])">
+                        {{ score['Total មធ្យមភាគ'] }}
+                    </span>
+
+
+            </td>
+            <td>
+
+                <span [ngStyle]="getScoreColor(score['ពិន្ទុកសរុប With Status'])">
+                    {{ score['ពិន្ទុកសរុប With Status'] }}
+                </span>
+
+
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+
+</div>
+
+
+
+
+
+
+

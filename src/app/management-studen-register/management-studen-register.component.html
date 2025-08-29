@@ -1,0 +1,287 @@
+<div [class.disabled-body]="isLoading">
+    <!-- Your page content -->
+
+
+
+    <div class="container ">
+
+        <h2 class="text-center mt-2">ចុះឈ្មោះ និស្សិត</h2>
+        <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
+            <!-- Username Field -->
+
+
+
+
+
+
+            <!-- Error message for username conflict or other errors -->
+            <div *ngIf="submissionError" class="text-danger mt-2">
+                {{ submissionError }}
+            </div>
+
+
+
+
+            <span>username </span>
+            <br>
+            <nz-form-item>
+                <nz-form-control nzErrorTip="សូមបញ្ចូលឈ្មោះ username!">
+                    <input style="border-radius: 7px !important;" formControlName="username" nz-input
+                        placeholder="username"
+                        [ngClass]="{ 'is-invalid': studentForm.get('username')?.invalid && studentForm.get('username')?.touched }" />
+
+                </nz-form-control>
+            </nz-form-item>
+
+
+
+
+
+
+            <span>ឈ្មោះ </span>
+            <br>
+
+
+            <nz-form-item>
+                <nz-form-control>
+                    <nz-input-group>
+                        <input formControlName="name" nz-input placeholder="ឈ្មោះ"
+                            style="border-radius: 7px !important;" />
+
+                        <div *ngIf="studentForm.get('name')?.invalid && studentForm.get('name')?.touched"
+                            class="text-danger">
+                            ទាមទារឈ្មោះ
+                        </div>
+
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+
+
+
+
+
+
+
+
+
+            <!-- Password Field -->
+            <div class="form-group">
+                <span>password </span>
+                <br>
+                <div class="input-group">
+
+
+
+                    <nz-form-item>
+                        <nz-form-control>
+                            <nz-input-group nzPrefixIcon="lock" style="border-radius: 7px !important;">
+                                <input formControlName="password" nz-input [type]="showPassword ? 'text' : 'password'"
+                                    placeholder="Password" />
+
+
+                                <button nz-button type="button" (click)="togglePasswordVisibility()">
+                                    <i class="fa" [ngClass]="showPassword ? 'fa-eye' : 'fa-eye-slash'"></i>
+                                </button>
+
+
+                                <button nz-button type="button" (click)="generatePassword()"><i class="fa fa-key"></i>
+                                    Generate
+                                </button>
+
+
+                            </nz-input-group>
+                        </nz-form-control>
+
+
+                        <div *ngIf="studentForm.get('password')?.invalid && studentForm.get('password')?.touched"
+                            class="text-danger">
+                            ពាក្យសម្ងាត់ត្រូវតែមានយ៉ាងហោចណាស់ 8 តួអក្សរ ហើយរួមបញ្ចូលអក្សរធំ អក្សរតូច លេខ និង
+                            ពិសេស
+                            តួអក្សរ។
+                        </div>
+
+                    </nz-form-item>
+
+
+
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+
+
+
+            <br>
+
+            ជំនាញ
+            <br>
+            <nz-select style="border-radius: 7px !important;" style="width: 300px; " nzShowSearch nzAllowClear
+                nzPlaceHolder="Select a person" formControlName="major_id">
+
+                <nz-option *ngFor="let major of majors" nzLabel="{{ major.major_name }}"
+                    nzValue="{{major.id}}"></nz-option>
+            </nz-select>
+
+
+
+            <br>
+
+            <br>
+            <div class="form-group">
+
+                កាលបរិច្ឆេទចូលរៀន
+
+                <br>
+                <nz-date-picker style="width: 300px; " nzMode="month" [nzFormat]="monthFormat"
+                    formControlName="date_joined"></nz-date-picker>
+
+
+                <div *ngIf="studentForm.get('date_joined')?.invalid && studentForm.get('date_joined')?.touched"
+                    class="text-danger">
+                    កាលបរិច្ឆេទចូលរៀន required.
+                </div>
+
+            </div>
+
+
+            <br>
+
+
+            <span>ក្រុម </span>
+            <br>
+
+            <nz-input-number formControlName="group_student">
+
+            </nz-input-number>
+
+            <br>
+            <br>
+
+
+            វេនសិក្សា
+            <br>
+            <nz-select style="width: 300px; " nzShowSearch nzAllowClear nzPlaceHolder="Select a person"
+                formControlName="shift_name">
+                <nz-option nzLabel="Monday-Friday Morning" nzValue="Monday-Friday Morning"></nz-option>
+                <nz-option nzLabel="Monday-Friday Afternoon" nzValue="Monday-Friday Afternoon"></nz-option>
+                <nz-option nzLabel="Monday-Friday Evening" nzValue="Monday-Friday Evening"></nz-option>
+                <nz-option nzLabel="Saturday-Sunday" nzValue="Saturday-Sunday"></nz-option>
+            </nz-select>
+
+
+            <style>
+                /* Use ::ng-deep to style elements inside nz-input-group */
+                ::ng-deep .custom-label {
+                    font-size: 16px;
+                    color: #198754;
+                    font-weight: bold;
+                    padding-left: 10px;
+                }
+
+                /* Select component background color */
+                ::ng-deep .ant-select {
+                    border-radius: 7px !important;
+                }
+
+                ::ng-deep .ant-select-selector {
+                    border-radius: 7px !important;
+                }
+
+                ::ng-deep .ant-select-item {
+                    border-radius: 7px !important;
+                }
+
+                ::ng-deep .ant-input,
+                ::ng-deep .ant-picker,
+                ::ng-deep .ant-input-number {
+                    border-radius: 7px !important;
+                }
+            </style>
+
+
+
+            <br>
+            <br>
+
+
+
+
+
+
+
+            <nz-spin *ngIf="isLoading" nzSimple></nz-spin>
+            <style>
+                .disabled-body {
+                    pointer-events: none;
+                    /* Disable all interactions */
+                    opacity: 0.5;
+                    /* Optional: dim the page for a better visual effect */
+                    position: relative;
+                }
+
+                nz-spin {
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    z-index: 1000;
+                    /* Ensure the spinner is above other content */
+                }
+            </style>
+
+
+
+            <button type="submit" style="border-radius: 7px !important;" nz-button nzType="primary" class="w-100"
+                [disabled]="studentForm.invalid">
+                Submit
+            </button>
+
+
+
+            <div *ngIf="submissionError" class="text-danger mt-2">
+                {{ submissionError }}
+            </div>
+
+            <div *ngIf="submissionSuccess" class="text-success mt-2">
+                {{ submissionSuccess }}
+            </div>
+
+
+
+            <div *ngIf="submissionSuccess" class="submission-success-overlay">
+                <div class="submission-success-container">
+                    <p>{{ submissionSuccess }}</p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+        </form>
+    </div>
+
+</div>

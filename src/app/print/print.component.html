@@ -1,0 +1,337 @@
+<style>
+    body {
+        font-family: Moul;
+        font-size: xx-small;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        border: 1px solid black;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .UniversityLogo {
+        width: 100px;
+    }
+</style>
+
+
+<nz-skeleton [nzActive]="true" *ngIf="isLoading" [nzAvatar]="true" [nzParagraph]="{ rows: 10 }"></nz-skeleton>
+
+
+
+
+<div *ngIf="!isLoading" style="background-color: #ffffff; height: 200vh;">
+    <div class="header" style=" display: flex;">
+        <div style="width: 20%;">
+            <div>
+                <br>
+                <img class="UniversityLogo"
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEan2MdKi7N57D2ZeaZ7Y3iUauNq99Tdopcw&s"
+                    alt="UniversityLogo">
+            </div>
+            <div>
+                <p>សាកលវិទ្យាល័យជាតិមានជ័យ
+                    <br>
+                    ការិយាល័យសិក្សា
+                </p>
+            </div>
+        </div>
+
+        <div style="background-color: rgba(0, 255, 255, 0); width: 100%; transform: translateX(-10%);">
+            ព្រះរាជាណាចក្រកម្ពុជា
+            <br>
+            ជាតិ សាសនា ព្រះមហាក្សត្រ
+            <br>
+            <img width="100px" src="https://puyvongheng.github.io/img/Screenshot%202024-11-13%20105603.png" alt="">
+            <br>
+            <br>
+            <br>
+            <br>
+            កាលវិភាគប្រចាំឆមាសទី {{filterSemester}}Timetable Semester{{filterSemester}}
+            <br>
+            ជំនាន់ទី{{ filterGeneration }} ឆ្នាំទី{{filterBatch}}
+
+
+            <div *ngIf="findMajor(studentDetails.major_id) as majorDetails">
+
+                <div *ngIf="findDepartment(majorDetails.Departments_id) as departmentDetails">
+                    មហាវិទ្យាល័យ {{ departmentDetails.faculty_name }}
+                </div>
+            </div>
+
+            ឆ្នាំសិក្សា {{filterYear}}-{{nextYear}}
+
+            <br>
+            <p style="font-family: Battambang;">
+                វេនសិក្សា {{filterStudyShift}}
+            </p>
+        </div>
+
+
+    </div>
+    <br>
+
+
+
+
+    <div class="timetable-container">
+        <br>
+        ជំនាញ :{{filterMajorName}} ({{filterGroupStudent}})
+        <br>
+        <div class="table-wrapper">
+            <table class="responsive-table" style="font-family: Battambang;">
+                <thead>
+                    <tr>
+                        <th>ម៉ោងសិក្សា/Study Time</th>
+
+                        <th *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')">
+                            ថ្ងៃច័ន្ទ/Monday
+                        </th>
+                        <th *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')">
+                            ថ្ងៃអង្គារ/Tuesday
+                        </th>
+                        <th *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')">
+                            ថ្ងៃពុធ/Wednesday
+                        </th>
+                        <th *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')">
+                            ថ្ងៃព្រហស្បតិ៍/Thursday
+                        </th>
+                        <th *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')">
+                            ថ្ងៃសុក្រ/Friday
+                        </th>
+
+                        <!-- For Saturday and Sunday columns -->
+                        <th *ngIf="filterStudyShift === '' || filterStudyShift.includes('Saturday-Sunday')">
+                            ថ្ងៃសៅរ៍/Saturday
+                        </th>
+                        <th *ngIf="filterStudyShift === '' || filterStudyShift.includes('Saturday-Sunday')">
+                            ថ្ងៃអាទិត្យ/Sunday
+                        </th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let entry of groupedTimetables">
+
+                        <td>​
+
+                            {{ entry.time }}
+                        </td>
+
+                        <td *ngIf="entry.Monday ; else freeMonday ; ">
+
+                            <div *ngIf="findStudySession(entry.Monday.study_sessions_id) as session">
+
+                            </div>
+
+                            {{ entry.Monday.subject_name }}/
+                            {{ findTeacher(entry.Monday.teacher_id) }}
+                            <div *ngIf="findRoom(entry.Monday.room_id) as room">
+                                <!--   Type: {{ room.room_type }}<br>-->
+                                បន្តប់: {{ room.room_number }}​​ ({{ room.room_type }})<br>
+                                ជាន់ទី: {{ room.floor }}
+                            </div>
+                        </td>
+
+                        <ng-template #freeMonday>
+
+                            <td *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')">free</td>
+
+
+                        </ng-template>
+
+                        <td *ngIf="entry.Tuesday  ; else freeTuesday">
+
+                            {{ entry.Tuesday.subject_name }} /
+                            {{ findTeacher(entry.Tuesday.teacher_id) }}<br>
+                            <div *ngIf="findRoom(entry.Tuesday.room_id) as room">
+
+                                បន្តប់: {{ room.room_number }}​​ ({{ room.room_type }})<br>
+                                ជាន់ទី: {{ room.floor }}
+
+                            </div>
+                        </td>
+                        <ng-template #freeTuesday>
+                            <td *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')">free</td>
+                        </ng-template>
+
+
+                        <td *ngIf="entry.Wednesday ; else freeWednesday">
+
+                            {{ entry.Wednesday.subject_name }}/
+                            {{ findTeacher(entry.Wednesday.teacher_id) }}<br>
+                            <div *ngIf="findRoom(entry.Wednesday.room_id) as room">
+                                បន្តប់: {{ room.room_number }}​​ ({{ room.room_type }})<br>
+                                ជាន់ទី: {{ room.floor }}
+
+                            </div>
+                        </td>
+                        <ng-template #freeWednesday>
+                            <td *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')">free</td>
+                        </ng-template>
+
+
+                        <td *ngIf="entry.Thursday; else freeThursday">
+
+                            {{ entry.Thursday.subject_name }}/
+                            {{ findTeacher(entry.Thursday.teacher_id) }}<br>
+                            <div *ngIf="findRoom(entry.Thursday.room_id) as room">
+
+                                បន្តប់: {{ room.room_number }}​​ ({{ room.room_type }})<br>
+                                ជាន់ទី: {{ room.floor }}
+
+                            </div>
+                        </td>
+                        <ng-template #freeThursday>
+                            <td *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')">free</td>
+                        </ng-template>
+
+                        <td *ngIf="entry.Friday ; else freeFriday">
+
+                            {{ entry.Friday.subject_name }}/
+                            {{ findTeacher(entry.Friday.teacher_id) }}<br>
+                            <div *ngIf="findRoom(entry.Friday.room_id) as room">
+                                បន្តប់: {{ room.room_number }}​​ ({{ room.room_type }})<br>
+                                ជាន់ទី: {{ room.floor }}
+
+                            </div>
+                        </td>
+                        <ng-template #freeFriday>
+                            <td *ngIf="filterStudyShift === '' || filterStudyShift.includes('Monday-Friday')">free</td>
+                        </ng-template>
+
+
+                        <td *ngIf="entry.Saturday ; else freeSaturday">
+
+                            {{ entry.Saturday.subject_name }}/
+                            {{ findTeacher(entry.Saturday.teacher_id) }}<br>
+                            <div *ngIf="findRoom(entry.Saturday.room_id) as room">
+
+                                បន្តប់: {{ room.room_number }}​​ ({{ room.room_type }})<br>
+                                ជាន់ទី: {{ room.floor }}
+
+                            </div>
+                        </td>
+                        <ng-template #freeSaturday>
+                            <td *ngIf="filterStudyShift === '' || filterStudyShift.includes('Saturday-Sunday')">free
+                            </td>
+                        </ng-template>
+
+
+                        <td *ngIf="entry.Sunday ; else freeSunday">
+                            {{ entry.Sunday.subject_name }}/
+                            {{ findTeacher(entry.Sunday.teacher_id) }}<br>
+                            <div *ngIf="findRoom(entry.Sunday.room_id) as room">
+                                បន្តប់: {{ room.room_number }}​​ ({{ room.room_type }})<br>
+                                ជាន់ទី: {{ room.floor }}
+                            </div>
+                        </td>
+                        <ng-template #freeSunday>
+                            <td *ngIf="filterStudyShift === '' || filterStudyShift.includes('Saturday-Sunday')">free
+                            </td>
+                        </ng-template>
+
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+
+    <style>
+        @media (max-width: 768px) {
+            * {
+                font-size: 8px;
+
+            }
+
+            .UniversityLogo {
+                width: 50px;
+            }
+
+            .timetable-container {
+                transform: rotate(90deg);
+                font-size: 8px;
+                position: relative;
+                margin-top: 5px;
+
+
+
+            }
+
+            table {
+                background-color: rgba(255, 192, 203, 0.19);
+                height: 100%;
+                max-width: 900px;
+                margin-top: 1px;
+
+            }
+
+
+
+
+
+
+
+
+        }
+
+        /* For very small screens, stack data as cards */
+        @media (max-width: 480px) {}
+    </style>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div>
+
+    <br>
+    <hr>
+
+    <label for="filterYear">Filter by Year:</label>
+    <select id="filterYear" class="filter-select " [(ngModel)]="filterYear" (change)="filterTimetables()">
+        <option *ngFor="let year of uniqueYears" [value]="year">{{ year }}</option>
+        <option value="">Other</option>
+    </select>
+
+
+    <label for="filterSemester">Filter by Semester:</label>
+    <select id="filterSemester" class="filter-select " [(ngModel)]="filterSemester" (change)="filterTimetables()">
+        <option *ngFor="let semester of uniqueSemesters" [value]="semester">
+            {{ semester }}
+        </option>
+        <option value="">All</option>
+    </select>
+
+
+    <div *ngIf="message" class="alert alert-danger">{{ message }}</div>
+
+
+
+
+    <button (click)="filterTimetables() ">fff</button>
+</div>

@@ -1,0 +1,150 @@
+<section *ngIf="!isLoading">
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+
+
+
+
+            <div class="col-md-9 col-lg-6 col-xl-5 img">
+                <img src="https://prod-web-assets-securly.s3.us-west-1.amazonaws.com/images/discern-hero.png"
+                    class="img-fluid custom-img" alt="Sample image">
+            </div>
+            <style>
+                @media (max-width: 576px) {
+                    .custom-img {
+                        max-width: 250px;
+                        display: none;
+                        /* Set a smaller max width for mobile screens */
+                    }
+                }
+
+                @media (max-width: 450px) {}
+            </style>
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                <form (ngSubmit)="login_tacher()">
+
+
+                    <ul nz-menu nzMode="horizontal" class=" w-100 ​">
+                        <li nz-menu-item nzMatchRouter>
+                            <a [routerLink]="['/login']">និស្សិត</a>
+                        </li>
+                        <li nz-menu-item nzMatchRouter>
+                            <a [routerLink]="['/loginteacher']">គ្រូ</a>
+                        </li>
+                    </ul>
+
+                    <style>
+                        ul {
+                            display: flex;
+                            justify-content: space-between;
+                            /* Distribute items evenly */
+                            align-items: center;
+                            /* Center items vertically */
+                            text-align: center;
+                            /* Ensure text is centered inside each item */
+                        }
+
+                        ul li {
+                            flex: 1;
+                            /* Ensures each item takes equal space */
+                            text-align: center;
+                            /* Centers text inside each item */
+                        }
+                    </style>
+
+                    <br>
+
+                    <nz-alert *ngIf="loginStatus" [nzType]="alertType" [nzMessage]="loginStatus"
+                        [nzShowIcon]="true"></nz-alert>
+
+
+
+
+
+                    <!-- Email input -->
+                    <div data-mdb-input-init class="form-outline mb-4">
+                        <label class="form-label" for="username">Username
+                            <span *ngIf="!username" class="text-danger">*</span>
+                        </label>
+                        <input type="text" id="username" [(ngModel)]="username" name="username"
+                            class="form-control form-control-lg" placeholder="Enter a valid username" />
+                    </div>
+
+                    <!-- Password input -->
+                    <div data-mdb-input-init class="form-outline mb-3">
+                        <label class="form-label" for="password">password
+                            <span *ngIf="!password" class="text-danger">*</span>
+                        </label>
+                        <br>
+                        <input type="password" id="password" [(ngModel)]="password" name="password"
+                            class="form-control form-control-lg" placeholder="Enter password" />
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+
+                    </div>
+
+                    <p class="small fw-bold mt-2 pt-1 mb-0">មិនមានគណនីមែនទេ? <a href="registerteacher"
+                            class="link-danger">ចុះឈ្មោះ</a></p>
+
+                    <div class="text-center text-lg-start mt-4 pt-2 d-flex flex-column ">
+                        <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-lg text-light"
+                            [disabled]="!username ||  !password" style="
+                        padding-left: 2.5rem; 
+                        padding-right: 2.5rem; 
+                        width: 100%; 
+                        background-color: rgb(0, 55, 255);
+                        border-radius: 1000px;
+                        
+                        ">ចូល</button>
+
+                        <button [routerLink]="['/t']" data-mdb-button-init data-mdb-ripple-init
+                            class="btn  btn-lg  hover-button" style="
+                        padding-left: 2.5rem; 
+                        padding-right: 2.5rem;  
+                        width: 100%;  
+                        margin-top: 20px;
+                        border-radius: 1000px;
+                        
+                        ">ចូលមើលកាលវិភាគ</button>
+
+
+                        <style>
+                            .hover-button {
+                                border: 1px solid black;
+
+                                transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+                            }
+
+                            .hover-button:hover {
+                                transform: scale(1.02);
+                                /* Slightly enlarge the button */
+                                background-color: rgb(255, 26, 129);
+                                /* Change background to pink */
+                                color: white;
+                                border: 1px solid rgb(255, 255, 255);
+                            }
+                        </style>
+
+                    </div>
+
+                    <br>
+
+                    <div class="divider d-flex align-items-center my-4">
+                        <h5></h5>
+
+                    </div>
+
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+<!-- Displaying loading spinner in a centered position -->
+<div *ngIf="isLoading" class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <nz-spin nzSimple></nz-spin>
+</div>

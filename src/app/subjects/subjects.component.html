@@ -1,0 +1,286 @@
+<!--
+<button nz-button [nzType]="'primary'" (click)="showModal()"><span>Show Modal</span></button>
+-->
+
+
+
+<!-- 
+         nzClassName="custom-modal"
+
+    [nzTitle]="undefined" Hide the header/title -->
+<!-- [nzFooter]="null"  Hide the footer -->
+
+
+<style>
+    ::ng-deep .custom-modal .ant-modal-content {
+        border-radius: 20px;
+        padding: 50px 50px 20px 20px;
+
+    }
+</style>
+
+
+<nz-modal  nzClassName="custom-modal" [(nzVisible)]="isVisible"
+ [nzTitle]="undefined"
+  [nzFooter]="null"
+  (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <ng-container *nzModalContent>
+
+        <div class="AddSubjectForm mt-4">
+            <form [formGroup]="subjectForm" (ngSubmit)="addOrUpdateSubject()" class="form-inline">
+                <div class="form-group me-2">
+                    <input formControlName="name" placeholder="បញ្ចូល មុខវិជ្ជា" class="form-control" />
+                </div>
+
+                <div class="form-group me-2">
+                    <input formControlName="batch" placeholder="បញ្ចូល ឆ្នាំ (1,2,3,4)" class="form-control" />
+                </div>
+
+                <nz-select nzPlaceHolder="ជ្រើសរើស មហាវិទ្យាល័យ" formControlName="faculties_id">
+                    <nz-option *ngFor="let faculty of faculties" [nzValue]="faculty.id" [nzLabel]="faculty.name"></nz-option>
+                </nz-select>
+
+               
+
+
+                <button type="submit" nz-button nzType="primary" nzShape="round" [disabled]="!subjectForm.valid">
+                    {{ isEditMode ? 'Update ' : 'បន្ថែម' }}
+
+                </button>
+
+                <button nz-button nzType="primary" nzShape="round" *ngIf="isEditMode" (click)="resetForm()">
+                    Cancel
+                </button>
+            </form>
+        </div>
+
+    </ng-container>
+</nz-modal>
+
+
+
+<div class="Subjects   mb-4" hidden>
+    <!-- Subjects Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="color: rgb(255, 26, 129);">ID</th>
+                <th style="color: rgb(255, 26, 129);">មហាវិ</th>
+
+                <th style="color: rgb(255, 26, 129);">Subject Name</th>
+                <th style="color: rgb(255, 26, 129);">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let subject of subjects">
+                <td>{{ subject.id }}</td>
+                <td>{{ subject.faculty_name }}</td>
+
+                <td>{{ subject.name }}</td>
+                <td>
+                    <i style="color: rgb(255, 7, 7); margin-right: 20px;" (click)="editSubject(subject)">edit</i>
+
+<a nz-popconfirm nzPopconfirmTitle="Are you sure delete this subject?" nzPopconfirmPlacement="bottom"
+    (nzOnConfirm)="confirmDelete(subject.id)">
+    Delete
+</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Add/Update Subject Form 
+
+<nz-select class="w-50" nzPlaceHolder="Select Faculty" [(ngModel)]="selectedFacultyId" (ngModelChange)="loadData()"
+    required>
+    <nz-option *ngFor="let faculty of faculties" [nzValue]="faculty.id" [nzLabel]="faculty.name">
+    </nz-option>
+</nz-select>
+
+-->
+
+
+
+
+  
+
+<div class="Subjects mb-4" hidden>
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="color: rgb(255, 26, 129);">ID</th>
+                <th style="color: rgb(255, 26, 129);">មហាវិទ្យាល័យ</th>
+                <th style="color: rgb(255, 26, 129);">Subject Name</th>
+                <th style="color: rgb(255, 26, 129);">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let faculty of groupedSubjects | keyvalue">
+                <!-- Faculty Header Row -->
+                <tr>
+                    <td colspan="4" style="background-color: #f3f3f3; font-weight: bold; color: deepskyblue;">
+                        {{ faculty.key }}
+                    </td>
+                </tr>
+                <!-- Subject Rows under Faculty -->
+                <tr *ngFor="let subject of faculty.value">
+                    <td>{{ subject.id }}</td>
+                    <td>{{ subject.faculty_name }}</td>
+                    <td>{{ subject.name }}</td>
+                    <td>
+                        <i style="color: rgb(255, 7, 7); margin-right: 20px;" (click)="editSubject(subject)">edit</i>
+                        <a nz-popconfirm nzPopconfirmTitle="Are you sure delete this subject?"
+                            nzPopconfirmPlacement="bottom" (nzOnConfirm)="confirmDelete(subject.id)">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
+</div>
+
+
+
+<!--
+<nz-table 
+#sortTable
+
+ #basicTable [nzBordered]="true" 
+[nzData]="subjects"
+[nzBordered]="true"
+[nzSize]="'middle'"
+>
+    <thead >
+        
+        <tr>
+            <th nzWidth="5%"   >ID</th>
+            <th nzWidth="5%">Faculty ID</th>
+            <th nzWidth="30%">Faculty Name</th>
+            <th nzWidth="40%">Subject Name</th>
+            <th nzWidth="20%">action</th>
+
+        </tr>
+    </thead>
+    <tbody>
+   
+        <tr *ngFor="let subject of subjects">
+            <td >{{ subject.id }}</td>
+            <td>{{ subject.faculties_id }}</td>
+            <td>{{ subject.faculty_name }}</td>
+            <td>{{ subject.name }}</td>
+            <td> 
+                
+                <i style="color: rgb(255, 7, 7); margin-right: 20px;" (click)="editSubject(subject)">edit</i>
+                <a nz-popconfirm nzPopconfirmTitle="Are you sure delete this subject?" nzPopconfirmPlacement="bottom"
+                    (nzOnConfirm)="confirmDelete(subject.id)">
+                    Delete
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
+-->
+
+
+
+<!-- PrimeNG Table with Pagination -->
+ <div class="container mt-4  absolute" style="background-color: white; border-radius: 10px; padding: 20px;
+ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+
+
+<button nz-button   nzShape="round"  nzType="primary"   (click)="showModal()"  >
+
+      បន្ថែម</button>
+
+
+
+<div class="d-flex">
+<nz-select class="w-50" nzPlaceHolder="ជ្រើស រើស មហាវិទ្យាល័យ" [(ngModel)]="selectedFacultyId" (ngModelChange)="loadData()"
+    required>
+    <nz-option *ngFor="let faculty of faculties" [nzValue]="faculty.id" [nzLabel]="faculty.name">
+    </nz-option>
+</nz-select>
+
+
+
+<nz-select class="w-50" nzPlaceHolder="ជ្រើស រើស ឆ្នាំ" [(ngModel)]="selectedbatch" (ngModelChange)="loadData()"
+    required>
+    <nz-option  [nzValue]="'1'" [nzLabel]="1">
+    </nz-option>
+        <nz-option [nzValue]="'2'" [nzLabel]="2">
+        </nz-option>
+            <nz-option [nzValue]="'3'" [nzLabel]="3">
+            </nz-option>
+                <nz-option [nzValue]="'4'" [nzLabel]="4">
+                </nz-option>
+</nz-select>
+
+</div>
+
+
+  
+<p-table [value]="subjects"
+
+ [paginator]="true" 
+ [rows]="5"
+  [tableStyle]="{ 'min-width': '50rem' }"
+
+  [size]="'small'"
+
+      [showCurrentPageReport]="true"
+
+currentPageReportTemplate="បង្ហាញ {first} ទៅ {last} នៃ {totalRecords} ទិន្ន័យ"
+    [rowsPerPageOptions]="[5, 10, 20 , subjects.length]">
+
+
+
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width:5%" pSortableColumn="id">ID <p-sortIcon field="id" /></th>
+            <th style="width:30%"  pSortableColumn="faculty_name">មហាវិទ្យាល័យ <p-sortIcon field="faculty_name" /></th>
+            <th style="width:30%"  pSortableColumn="name" >មុខវិជ្ជា <p-sortIcon field="name" /></th>
+            <th> ឆ្នាំ </th>
+             <th style="width:20%">action</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-subject>
+        <tr >
+            <td>{{ subject.id }}</td>
+            <td>{{ subject.faculty_name }}</td>
+            <td>{{ subject.name }}</td>
+             <td>{{ subject.batch }}</td>
+                <td  class="d-flex justify-content-center align-items-center" >
+                    <p-button icon="pi pi-user" class="mr-2" [rounded]="true" [outlined]="true" (click)="load_teacher_subjects(subject.id)" />
+                    <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)="editSubject(subject)"/>
+                    <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" nz-popconfirm nzPopconfirmTitle="Are you sure delete this subject?" nzPopconfirmPlacement="bottom"(nzOnConfirm)="confirmDelete(subject.id)"/>
+                </td>
+
+        </tr>
+    </ng-template>
+</p-table>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<nz-modal nzClassName="custom-modal" [(nzVisible)]="isVisible1" [nzTitle]="undefined" [nzFooter]="null"
+    (nzOnCancel)="handleCancel1()" (nzOnOk)="handleOk1()">
+    <ng-container *nzModalContent>
+
+    <ul>
+        <li *ngFor="let s of teacherSubjects1 "> {{s.teacher_name}}</li>
+    </ul>
+
+    </ng-container>
+</nz-modal>
